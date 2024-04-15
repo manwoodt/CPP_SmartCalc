@@ -1,5 +1,5 @@
-#ifndef EXAMPLEMODEL_H
-#define EXAMPLEMODEL_H
+#ifndef CALC_MODEL_H
+#define CALC_MODEL_H
 #include <cstdlib>
 #include <string>
 #include <stack>
@@ -13,6 +13,8 @@ namespace s21
         ~Model() {}
         double MainCalculation(std::string &str, double x);
         int Validator(std::string &input_str);
+        void CalculateAnswer(const std::string input_exp, const std::string input_x);
+        double GetAnswer();
 
     private:
         void Calculation();
