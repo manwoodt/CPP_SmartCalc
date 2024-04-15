@@ -55,15 +55,15 @@ namespace s21
         //  int Validator(std::string &input_str);
         void CalculateAnswer(const std::string input_exp, const std::string input_x);
         double GetAnswer();
-        void CreateTokenMap(std::map<std::string, Token> &token_map);
+        void Parser(const std::string input_exp);
+        void CreateTokenMap();
 
     private:
         double answer_ = NAN;
         double x_ = NAN;
         std::string input_exp_;
-
-        //   std::map<>
-
+        std::map<std::string, Token> token_map_;
+        std::vector<Token> input_;
         // void Calculation();
         //  bool IsOperator(char c);
         //  bool IsPlusMinus(char с);

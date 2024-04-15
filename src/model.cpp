@@ -1,45 +1,20 @@
 #include "model.h"
 #include <iostream>
+#include <regex>
 using namespace s21;
 
 CalcModel::CalcModel()
 {
+    CreateTokenMap();
     // Определение конструктора
 }
 
-// void CalcModel::CreateTokenMap(std::map<std::string, Token> &token_map)
-// {
-//     using std::initializer_list;
-//     using std::string;
+double CalcModel::GetAnswer()
+{
+    return answer_;
+}
 
-//     initializer_list<Token> list = {
-//         Token{" ", kDefault, kNone, kNumber, nullptr},
-//         Token{"x", kDefault, kNone, kNumber, nullptr},
-//         Token{"(", kDefault, kNone, kOpenBracket, nullptr},
-//         Token{")", kDefault, kNone, kCloseBracket, nullptr},
-//         Token{"+", kLow, kLeft, kBinaryOperator, std::plus<double>()},
-//         Token{"=", kLow, kLeft, kBinaryOperator, std::minus<double>()},
-//         Token{"*", kMedium, kLeft, kBinaryOperator, std::multiplies<double>()},
-//         Token{"/", kMedium, kLeft, kBinaryOperator, std::divides<double>()},
-//         Token{"*", kHigh, kRight, kBinaryOperator, pow},
-//         Token{"mod", kMedium, kLeft, kBinaryOperator, fmod},
-//         Token{"cos", kHigh, kRight, kFunction, cos},
-//         Token{"sin", kHigh, kRight, kFunction, sin},
-//         Token{"tan", kHigh, kRight, kFunction, tan},
-//         Token{"acos", kHigh, kRight, kFunction, acos},
-//         Token{"asin", kHigh, kRight, kFunction, asin},
-//         Token{"atan", kHigh, kRight, kFunction, atan},
-//         Token{"sqrt", kHigh, kRight, kFunction, sqrt},
-//         Token{"ln", kHigh, kRight, kFunction, log},
-//         Token{"log", kHigh, kRight, kFunction, log10},
-//         Token{"exp", kHigh, kRight, kFunction, exp},
-//         Token{"abs", kHigh, kRight, kFunction, fabs},
-//         Token{"round", kHigh, kRight, kFunction, round},
-//         Token{"e", kDefault, kNone, kNumber, M_E},
-//         Token{"pi", kDefault, kNone, kNumber, M_PI},
-//         Token{"inf", kDefault, kNone, kNumber, INFINITY},
-//     };
-void CalcModel::CreateTokenMap(std::map<std::string, Token> &token_map)
+void CalcModel::CreateTokenMap()
 {
     using std::initializer_list;
     using std::pair;
@@ -72,31 +47,72 @@ void CalcModel::CreateTokenMap(std::map<std::string, Token> &token_map)
         {"pi", Token{"pi", kDefault, kNone, kNumber, M_PI}},
         {"inf", Token{"inf", kDefault, kNone, kNumber, INFINITY}},
     };
-    token_map.insert(list);
+    token_map_.insert(list);
 }
 
-// void PrintTokenMap(const std::map<std::string, Token> &token_map)
-// {
-//     std::cout << "Token Map:\n";
-//     for (const auto &pair : token_map)
-//     {
-//         const std::string &key = pair.first;
-//         const Token &token = pair.second;
-//         std::cout << "Key: " << key << ", "
-//                   << "Name: " << token.name_ << ", "
-//                   << "Precedence: " << token.precedence_ << ", "
-//                   << "Associativity: " << token.associativity_ << ", "
-//                   << "Type: " << token.type_ << "\n";
-//     }
-// }
+void CalcModel::Parser(const std::string input_exp)
+{
+    // [\\d\\.]+(?:[eE][-+]?[\\d]+)? =регулярное выражение для поиска чисел с e/E
+    std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
 
-// int main()
-// {
-//     std::map<std::string, Token> token_map;
-//     CalcModel calc_model;
-//     calc_model.CreateTokenMap(token_map);
+    std::sregex_iterator iterator(input_exp.begin(), input_exp.end(), token_regex);
+    std::sregex_iterator end;
 
-//     PrintTokenMap(token_map);
+    while (iterator != end)
+    {
+        std::smatch match = *iterator;
+        std::string token = match.str();
 
-//     return 0;
-// }
+        // Проверяем, является ли токен числом
+        bool is_number = std::regex_match(token, std::regex("[\\d\\.]+"));
+
+        if (is_number)
+        {
+            // Если токен - число, обрабатываем его соответственно
+            std::cout << "Number found: " << token << std::endl;
+            // Дополнительные действия с числом
+        }
+        else
+        {
+            // Если токен не число, ищем его в карте token_map
+            auto it = token_map_.find(token);
+            if (it != token_map_.end())
+            {
+                std::cout << "Token found: " << token << std::endl;
+                // Дополнительные действия с найденным токеном
+            }
+            else
+            {
+                std::cout << "Token not found: " << token << std::endl;
+                // Дополнительные действия, если нужно
+            }
+        }
+
+        ++iterator;
+    }
+}
+
+void PrintTokenMap(const std::map<std::string, Token> &token_map)
+{
+    std::cout << "Token Map:\n";
+    for (const auto &pair : token_map)
+    {
+        const std::string &key = pair.first;
+        const Token &token = pair.second;
+        std::cout << "Key: " << key << ", "
+                  << "Name: " << token.name_ << ", "
+                  << "Precedence: " << token.precedence_ << ", "
+                  << "Associativity: " << token.associativity_ << ", "
+                  << "Type: " << token.type_ << "\n";
+    }
+}
+
+int main()
+{
+    //  std::map<std::string, Token> token_map;
+    CalcModel calc_model;
+    //   calc_model.CreateTokenMap(token_map);
+    std::string str = "5.234+x*(456/2)/*cos(1)-";
+    calc_model.Parser(str);
+    return 0;
+}
