@@ -21,9 +21,9 @@ test: clean
 #main.cpp 
 mytest: 
 	@echo --------------------MYTEST-----------------------
-	$(GCC) -std=c++17 -o  calc *.cpp -lm -g
+	$(GCC) -std=c++17 -o  calc model.cpp -lm -g
 	@./calc
-	@rm matrix
+	@rm calc
 
 cppcheck:
 	@echo -------------------CPPCHECK------------------------

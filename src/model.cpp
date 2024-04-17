@@ -29,7 +29,7 @@ void CalcModel::CreateTokenMap()
         {"-", Token{"-", kLow, kLeft, kBinaryOperator, std::minus<double>()}},
         {"*", Token{"*", kMedium, kLeft, kBinaryOperator, std::multiplies<double>()}},
         {"/", Token{"/", kMedium, kLeft, kBinaryOperator, std::divides<double>()}},
-        {"*", Token{"*", kHigh, kRight, kBinaryOperator, pow}},
+        {"^", Token{"^", kHigh, kRight, kBinaryOperator, pow}},
         {"mod", Token{"mod", kMedium, kLeft, kBinaryOperator, fmod}},
         {"cos", Token{"cos", kHigh, kRight, kFunction, cos}},
         {"sin", Token{"sin", kHigh, kRight, kFunction, sin}},
@@ -52,7 +52,7 @@ void CalcModel::CreateTokenMap()
 
 void CalcModel::Parser(const std::string input_exp)
 {
-    std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
+    std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|\\^|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
     // std::regex unary_minus_regex(R"(\-(\d+(\.\d+)?|\w+|\(.+\)))");
     // std::regex number_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?");
     std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
@@ -150,27 +150,67 @@ void PrintTokenMap(const std::map<std::string, Token> &token_map)
     }
 }
 
-// void CalcModel::ConvertToPostfix()
-// {
-//     while (!tokens_.empty())
-//     {
-//         switch (tokens_.front().type_)
-//         {
-//         case Type::kNumber:
-//             postfix_queue_.push(tokens_.front());
-//             tokens_.pop();
-//         }
-//         case Type::
-//     }
-// }
+void CalcModel::ConvertToPostfix()
+{
+    while (!tokens_.empty())
+    {
+        switch (tokens_.front().type_)
+        {
+        case Type::kNumber:
+            postfix_queue_.push(tokens_.front());
+            tokens_.pop();
+            break;
+        case Type::kUnaryOperator:
+        case Type::kFunction:
+        case Type::kOpenBracket:
+            stack.push(tokens_.front());
+            tokens_.pop();
+            break;
+        case Type::kCloseBracket:
+            while (stack.top().type_ != kOpenBracket)
+            {
+                postfix_queue_.push(stack.top());
+                stack.pop();
+            }
+            if (stack.top().type_ == kOpenBracket)
+                stack.pop();
+            tokens_.pop();
+            break;
+        case Type::kBinaryOperator:
+            while (!stack.empty() &&
+                   (stack.top().type_ == kBinaryOperator &&
+                    (stack.top().precedence_ > tokens_.front().precedence_ ||
+                     (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft))))
+            {
+                postfix_queue_.push(stack.top());
+                stack.pop();
+            }
+            stack.push(tokens_.front());
+            tokens_.pop();
+            break;
+        }
+    }
+    while (!stack.empty())
+    {
+        postfix_queue_.push(stack.top());
+        stack.pop();
+    }
+}
 
+// 2+ cos(0.5)*5.6
 int main()
 {
     //  std::map<std::string, Token> token_map;
     CalcModel calc_model;
     //   calc_model.CreateTokenMap(token_map);
-    std::string str = "5+ 2- 3";
+    std::string str = "cos(1)+2*sin(0.5)";
     calc_model.Parser(str);
+    calc_model.ConvertToPostfix();
+    while (!calc_model.postfix_queue_.empty())
+    {
+        std::cout << calc_model.postfix_queue_.front().name_ << " "; // Выводим значение в начале очереди
+        calc_model.postfix_queue_.pop();                             // Удаляем значение из очереди
+    }
     // std::cout << "Значения вектора:" << std::endl;
     // for (std::vector<Token>::size_type i = 0; i < calc_model.tokens_.size(); ++i)
     // {
