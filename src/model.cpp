@@ -75,7 +75,7 @@ void CalcModel::Parser(const std::string input_exp)
             std::cout << "Number found: " << token << std::endl;
             // Дополнительные действия с числом
             Token number{token, kDefault, kNone, kNumber, std::stod(token)};
-            tokens_.push_back(number);
+            tokens_.push(number);
         }
         else
         {
@@ -85,7 +85,7 @@ void CalcModel::Parser(const std::string input_exp)
             {
                 std::cout << "Token found: " << token << std::endl;
                 // Дополнительные действия с найденным токеном
-                tokens_.push_back(it->second);
+                tokens_.push(it->second);
             }
             else
             {
@@ -103,13 +103,34 @@ void CalcModel::Parser(const std::string input_exp)
 void CalcModel::MakeUnary()
 {
     Token unary_minus{"negate", kDefault, kNone, kNumber, std::negate<double>()};
-    for (size_t i = 0; i < tokens_.size(); i++)
+
+    // Создаем пустую очередь для обработки
+    std::queue<Token> temp_queue;
+
+    // Переносим элементы из текущей очереди tokens_ во временную очередь temp_queue
+    while (!tokens_.empty())
     {
-        bool is_minus = (tokens_[i].name_ == "-");
-        bool is_unary = (i == 0 || (tokens_[i - 1].type_ != kNumber && tokens_[i - 1].type_ != kCloseBracket));
+        temp_queue.push(tokens_.front());
+        tokens_.pop();
+    }
+
+    // Обрабатываем каждый элемент во временной очереди и добавляем их обратно в tokens_
+    while (!temp_queue.empty())
+    {
+        Token current_token = temp_queue.front();
+        temp_queue.pop();
+
+        bool is_minus = (current_token.name_ == "-");
+        bool is_unary = (tokens_.empty() || (tokens_.back().type_ != kNumber && tokens_.back().type_ != kCloseBracket));
+
         if (is_minus && is_unary)
         {
-            tokens_[i] = unary_minus;
+            // Добавляем унарный минус перед соответствующими элементами
+            tokens_.push(unary_minus);
+        }
+        else
+        {
+            tokens_.push(current_token);
         }
     }
 }
@@ -129,20 +150,34 @@ void PrintTokenMap(const std::map<std::string, Token> &token_map)
     }
 }
 
+// void CalcModel::ConvertToPostfix()
+// {
+//     while (!tokens_.empty())
+//     {
+//         switch (tokens_.front().type_)
+//         {
+//         case Type::kNumber:
+//             postfix_queue_.push(tokens_.front());
+//             tokens_.pop();
+//         }
+//         case Type::
+//     }
+// }
+
 int main()
 {
     //  std::map<std::string, Token> token_map;
     CalcModel calc_model;
     //   calc_model.CreateTokenMap(token_map);
-    std::string str = "-5.234 -x * (-  456/2)/*cos(1)- 3.14E-2";
+    std::string str = "5+ 2- 3";
     calc_model.Parser(str);
-    std::cout << "Значения вектора:" << std::endl;
-    for (std::vector<Token>::size_type i = 0; i < calc_model.tokens_.size(); ++i)
-    {
-        std::cout << calc_model.tokens_[i] << "\n";
-    }
-    std::cout << "\n"
-              << std::endl;
+    // std::cout << "Значения вектора:" << std::endl;
+    // for (std::vector<Token>::size_type i = 0; i < calc_model.tokens_.size(); ++i)
+    // {
+    //     std::cout << calc_model.tokens_[i] << "\n";
+    // }
+    // std::cout << "\n"
+    //           << std::endl;
     return 0;
 }
 

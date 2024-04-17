@@ -5,6 +5,8 @@
 #include <functional>
 #include <variant>
 #include <map>
+#include <queue>
+#include <stack>
 
 #include <sstream>
 
@@ -72,8 +74,11 @@ namespace s21
         double GetAnswer();
         void Parser(const std::string input_exp);
         void CreateTokenMap();
-        std::vector<Token> tokens_;
+        std::queue<Token> tokens_;
+        std::queue<Token> postfix_queue_;
+        std::stack<Token> stack;
         void MakeUnary();
+        void ConvertToPostfix();
 
     private:
         double answer_ = NAN;
