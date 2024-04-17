@@ -6,6 +6,8 @@
 #include <variant>
 #include <map>
 
+#include <sstream>
+
 enum Type
 {
     kNumber,
@@ -42,6 +44,19 @@ struct Token
     Associativity associativity_;
     Type type_;
     function_variant function_;
+
+    // Перегрузка оператора "<<" для вывода объектов Token в поток вывода
+    friend std::ostream &operator<<(std::ostream &os, const Token &token)
+    {
+        std::ostringstream oss;
+        oss << "Name: " << token.name_ << ", "
+            << "Precedence: " << token.precedence_ << ", "
+            << "Associativity: " << token.associativity_ << ", "
+            << "Type: " << token.type_ << ", ";
+
+        os << oss.str();
+        return os;
+    }
 };
 
 namespace s21
@@ -57,13 +72,15 @@ namespace s21
         double GetAnswer();
         void Parser(const std::string input_exp);
         void CreateTokenMap();
+        std::vector<Token> tokens_;
+        void MakeUnary();
 
     private:
         double answer_ = NAN;
         double x_ = NAN;
         std::string input_exp_;
         std::map<std::string, Token> token_map_;
-        std::vector<Token> input_;
+
         // void Calculation();
         //  bool IsOperator(char c);
         //  bool IsPlusMinus(char с);
