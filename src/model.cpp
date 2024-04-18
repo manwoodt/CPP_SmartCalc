@@ -149,20 +149,19 @@ void PrintTokenMap(const std::map<std::string, Token> &token_map)
 void CalcModel::CheckTokens()
 {
     std::queue<Token> checked_tokens;
-    bool error = 0;
     if (!CheckFirstToken[tokens_.front().type_])
-        error = 1;
+        throw std::logic_error("\"" + tokens_.front().name_ + "\" can't be at the start of the example");
     while (tokens_.size() != 1)
     {
         checked_tokens.push(tokens_.front());
         tokens_.pop();
         if (!SuitableTypesMatrix_[checked_tokens.back().type_][tokens_.front().type_])
-            error = 1;
+            throw std::logic_error("Wrong sequence: " + checked_tokens.back().name_ +
+                                   " " + tokens_.front().name_);
     }
     if (!CheckLastToken[tokens_.front().type_])
-        error = 1;
-    if (error)
-        throw std::logic_error("Wrong sequence");
+        throw std::logic_error("\"" + checked_tokens.back().name_ + "\" can't be at the end of the example");
+    checked_tokens.push(tokens_.front());
     tokens_ = checked_tokens;
 }
 
@@ -262,7 +261,7 @@ double CalcModel::PopFromResult()
 int main()
 {
     CalcModel calc_model;
-    std::string str = ")2+ 3-4";
+    std::string str = "2+ cos(0.5)*5.6";
     calc_model.Parser(str);
     calc_model.ConvertToPostfix();
     std::queue<Token> temp_queue{calc_model.postfix_queue_};
