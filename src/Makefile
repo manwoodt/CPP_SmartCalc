@@ -9,20 +9,21 @@ all: test clean
 clean:
 	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css matrix_test report *.txt *.dSYM 
 
-s21_matrix.a:
-	$(GCC) -c s21_*.cc -o matrix.o
-	ar rcs matrix.a matrix.o
+# s21_matrix.a:
+# 	$(GCC) -c s21_*.cc -o matrix.o
+# 	ar rcs matrix.a matrix.o
 
-test: clean
+test: 
 	$(GCC) $(GCOV) -c model.cpp
 	$(GCC) -c tests.cpp $(CHECKFLAGS)
 	$(GCC) $(GCOV) -o calc_test tests.o model.o $(CHECKFLAGS) -g
 	./calc_test
+	make clean
 
 #main.cpp 
 mytest:
 	@echo --------------------MYTEST-----------------------
-	$(GCC) -std=c++17 -o  calc model.cpp -lm -g
+	$(GCC) -std=c++17 -o  calc model.cpp main.cpp -lm -g
 	@./calc
 #	@rm calc
 
@@ -40,9 +41,9 @@ clang:
 
 leaks: test
 ifeq ($(OS), Linux)
-	CK_FORK=no valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./matrix_test
+	CK_FORK=no valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./calc_test
 else
-	leaks -atExit --leak-check=full --show-leak-kinds=all  ./matrix_test 
+	leaks -atExit --leak-check=full --show-leak-kinds=all  ./calc_test 
 endif
 
 gcov_report: test

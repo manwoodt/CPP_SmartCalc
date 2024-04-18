@@ -2,11 +2,16 @@
 #define CALC_MODEL_H
 #include <string>
 #include <cmath>
+#include <iostream>
+#include <regex>
+
 #include <functional>
 #include <variant>
+
 #include <map>
 #include <queue>
 #include <stack>
+
 #include <sstream>
 
 enum Type
@@ -71,19 +76,21 @@ namespace s21
     private:
         void Parser(const std::string input_str);
         void CreateTokenMap();
-        std::queue<Token> tokens_;
-        std::queue<Token> postfix_queue_;
-        std::stack<Token> stack;
         void MakeUnary();
         void ConvertToPostfix();
         double PostfixNotationCalculation();
 
-        double answer_ = NAN;
-        // сделать функцию для x
-        double x_ = NAN;
+        std::queue<Token> tokens_;
+        std::queue<Token> postfix_queue_;
+        std::stack<Token> stack;
         std::string input_exp_;
         std::vector<double> result_;
         std::map<std::string, Token> token_map_;
+
+        double answer_ = NAN;
+        // сделать функцию для x
+        double x_ = NAN;
+
         void CheckTokens();
         void ClearTokens();
         void PushToResult(double num);
