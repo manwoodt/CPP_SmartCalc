@@ -174,7 +174,7 @@ void CalcModel::ConvertToPostfix()
             break;
         case Type::kBinaryOperator:
             while (!stack.empty() &&
-                   (stack.top().type_ == kBinaryOperator &&
+                   (stack.top().type_ == kFunction &&
                     (stack.top().precedence_ > tokens_.front().precedence_ ||
                      (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft))))
             {
@@ -185,30 +185,13 @@ void CalcModel::ConvertToPostfix()
             tokens_.pop();
             break;
         }
+        // std::cout << "Stack" << stack.top() << "\n";
     }
     while (!stack.empty())
     {
         postfix_queue_.push(stack.top());
         stack.pop();
     }
-}
-
-// 2+ cos(0.5)*5.6
-int main()
-{
-    CalcModel calc_model;
-    std::string str = "5+2";
-    calc_model.Parser(str);
-    calc_model.ConvertToPostfix();
-    std::queue<Token> temp_queue{calc_model.postfix_queue_};
-    while (!temp_queue.empty())
-    {
-        std::cout << temp_queue.front().name_ << " "; // Выводим значение в начале очереди
-        temp_queue.pop();                             // Удаляем значение из очереди
-    }
-    double res = calc_model.PostfixNotationCalculation(0);
-    std::cout << res << std::endl;
-    return 0;
 }
 
 double CalcModel::PostfixNotationCalculation(double x_value)
@@ -232,7 +215,9 @@ double CalcModel::PostfixNotationCalculation(double x_value)
                        { PushToResult(x_value); }},
             postfix_queue_.front().function_);
         postfix_queue_.pop();
+        std::cout << "Res:" << result_.back() << std::endl;
     }
+
     return PopFromResult();
 }
 
@@ -251,3 +236,23 @@ double CalcModel::PopFromResult()
     }
     return 0;
 }
+
+// 2+ cos(0.5)*5.6
+int main()
+{
+    CalcModel calc_model;
+    std::string str = "2+ cos(0.5)*5.6";
+    calc_model.Parser(str);
+    calc_model.ConvertToPostfix();
+    std::queue<Token> temp_queue{calc_model.postfix_queue_};
+    while (!temp_queue.empty())
+    {
+        std::cout << temp_queue.front().name_ << " "; // Выводим значение в начале очереди
+        temp_queue.pop();                             // Удаляем значение из очереди
+    }
+    double res = calc_model.PostfixNotationCalculation(0);
+    std::cout << "\n"
+              << res << std::endl;
+    return 0;
+}
+// ответ 0.9

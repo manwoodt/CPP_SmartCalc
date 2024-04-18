@@ -1,0 +1,12 @@
+        case Type::kBinaryOperator:
+            while (!stack.empty() &&
+                   (stack.top().type_ == kBinaryOperator &&
+                    (stack.top().precedence_ > tokens_.front().precedence_ ||
+                     (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft))))
+            {
+                postfix_queue_.push(stack.top());
+                stack.pop();
+            }
+            stack.push(tokens_.front());
+            tokens_.pop();
+            break;
