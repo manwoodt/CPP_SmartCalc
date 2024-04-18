@@ -6,7 +6,6 @@ using namespace s21;
 CalcModel::CalcModel()
 {
     CreateTokenMap();
-    // Определение конструктора
 }
 
 double CalcModel::GetAnswer()
@@ -53,10 +52,7 @@ void CalcModel::CreateTokenMap()
 void CalcModel::Parser(const std::string input_exp)
 {
     std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|\\^|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
-    // std::regex unary_minus_regex(R"(\-(\d+(\.\d+)?|\w+|\(.+\)))");
-    // std::regex number_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?");
     std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
-    std::regex unary_minus_regex(R"(\-(\d+(\.\d+)?(?:[eE][-+]?\d+)?))");
 
     std::sregex_iterator iterator(input_exp.begin(), input_exp.end(), token_regex);
     std::sregex_iterator end;
@@ -200,9 +196,7 @@ void CalcModel::ConvertToPostfix()
 // 2+ cos(0.5)*5.6
 int main()
 {
-    //  std::map<std::string, Token> token_map;
     CalcModel calc_model;
-    //   calc_model.CreateTokenMap(token_map);
     std::string str = "5+2";
     calc_model.Parser(str);
     calc_model.ConvertToPostfix();
@@ -214,13 +208,6 @@ int main()
     }
     double res = calc_model.PostfixNotationCalculation(0);
     std::cout << res << std::endl;
-    // std::cout << "Значения вектора:" << std::endl;
-    // for (std::vector<Token>::size_type i = 0; i < calc_model.tokens_.size(); ++i)
-    // {
-    //     std::cout << calc_model.tokens_[i] << "\n";
-    // }
-    // std::cout << "\n"
-    //           << std::endl;
     return 0;
 }
 
@@ -264,60 +251,3 @@ double CalcModel::PopFromResult()
     }
     return 0;
 }
-
-/*
-void CalcModel::Parser(const std::string input_exp)
-{
-    std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
-    // std::regex unary_minus_regex(R"(\-(\d+(\.\d+)?|\w+|\(.+\)))");
-    // std::regex number_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?");
-    std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
-    std::regex unary_minus_regex(R"(\-(\d+(\.\d+)?(?:[eE][-+]?\d+)?))");
-
-    std::sregex_iterator iterator(input_exp.begin(), input_exp.end(), token_regex);
-    std::sregex_iterator end;
-
-    while (iterator != end)
-    {
-        std::smatch match = *iterator;
-        std::string token = match.str();
-
-        // Проверяем, является ли токен числом
-        bool is_number = std::regex_match(token, number_regex);
-        bool is_unary_minus = (token.size() == 1 && token[0] == '-' && std::isdigit(input_exp[match.position(0) + 1]));
-
-        if (is_number)
-        {
-            // Если токен - число, обрабатываем его соответственно
-            std::cout << "Number found: " << token << std::endl;
-            // Дополнительные действия с числом
-            Token number{token, kDefault, kNone, kNumber, std::stod(token)};
-            input_.push_back(number);
-        }
-        else if (is_unary_minus)
-        {
-            std::cout << "Unary minus found: " << token << std::endl;
-            // Дополнительные действия с минусом
-            Token unary_minus{"negate", kDefault, kNone, kNumber, std::negate<double>()};
-            input_.push_back(unary_minus);
-        }
-        else
-        {
-            // Если токен не число, ищем его в карте token_map
-            auto it = token_map_.find(token);
-            if (it != token_map_.end())
-            {
-                std::cout << "Token found: " << token << std::endl;
-                // Дополнительные действия с найденным токеном
-                input_.push_back(it->second);
-            }
-            else
-            {
-                std::cout << "Token not found: " << token << std::endl;
-                // Дополнительные действия, если нужно
-            }
-        }
-
-        ++iterator;
-    }
-}*/
