@@ -76,7 +76,7 @@ void CalcModel::Parser(const std::string input_str)
         if (is_number)
         {
             // Если токен - число, обрабатываем его соответственно
-            // std::cout << "Number found: " << token << std::endl;
+            std::cout << "Number found: " << token << std::endl;
             // // Дополнительные действия с числом
             Token number{token, kDefault, kNone, kNumber, std::stod(token)};
             tokens_.push(number);
@@ -87,7 +87,7 @@ void CalcModel::Parser(const std::string input_str)
             auto it = token_map_.find(token);
             if (it != token_map_.end())
             {
-                // std::cout << "Token found: " << token << std::endl;
+                std::cout << "Token found: " << token << std::endl;
                 // // Дополнительные действия с найденным токеном
                 tokens_.push(it->second);
             }
@@ -185,9 +185,9 @@ void CalcModel::ConvertToPostfix()
             break;
         case Type::kBinaryOperator:
             while (!stack.empty() &&
-                   (stack.top().type_ == kUnaryFunction &&
-                    (stack.top().precedence_ > tokens_.front().precedence_ ||
-                     (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft))))
+                   (stack.top().type_ == kUnaryFunction ||
+                    stack.top().precedence_ > tokens_.front().precedence_ ||
+                    (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft)))
             {
                 postfix_queue_.push(stack.top());
                 stack.pop();

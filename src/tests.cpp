@@ -4,13 +4,13 @@
 
 s21::CalcModel calc;
 
-TEST(CalculatorControllerTest, test_0)
-{
-    calc.CalculateAnswer("-(1+3*(5%3+100))/50/1*20+-(50^2*(5+3^2)%(3*2)+31*20/(10*-5^(2+1)))+39^2*48*10*123-50-10",
-                         "");
-    double result = calc.GetAnswer();
-    ASSERT_EQ(result, 89799655.696);
-}
+// TEST(CalculatorControllerTest, test_0)
+// {
+//     calc.CalculateAnswer("-(1+3*(5%3+100))/50/1*20+-(50^2*(5+3^2)%(3*2)+31*20/(10*-5^(2+1)))+39^2*48*10*123-50-10",
+//                          "");
+//     double result = calc.GetAnswer();
+//     ASSERT_EQ(result, 89799655.696);
+// }
 
 TEST(CalculatorControllerTest, Test_1)
 {

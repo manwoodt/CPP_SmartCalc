@@ -1,7 +1,7 @@
 CC=g++ -std=c++17 
 GCC =$(CC) -Wall -Wextra -Werror -g
 CHECKFLAGS=-lgtest
-GCOV=--coverage -pthread
+GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
 OS = $(shell uname)
 
 all: test clean
@@ -18,7 +18,7 @@ test:
 	$(GCC) -c tests.cpp $(CHECKFLAGS)
 	$(GCC) $(GCOV) -o calc_test tests.o model.o $(CHECKFLAGS) -g
 	./calc_test
-	make clean
+#  make clean
 
 #main.cpp 
 mytest:
@@ -47,7 +47,7 @@ else
 endif
 
 gcov_report: test
-	lcov  -t "test" -o test.info --no-external -c -d .
+	lcov  -t "test" -o test.info --no-external -c -d  .
 	genhtml -o report/ test.info
 	open ./report/index.html
 	rm -rf test *.o *.a *gcda *gcno *info
