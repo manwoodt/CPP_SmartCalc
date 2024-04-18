@@ -7,7 +7,6 @@
 #include <map>
 #include <queue>
 #include <stack>
-
 #include <sstream>
 
 enum Type
@@ -34,10 +33,9 @@ enum Associativity
     kRight,
 };
 
-using unary_func = std::function<double(double)>;
-using binary_func = std::function<double(double, double)>;
-// пока хз зачем нулевой указатель
-using function_variant = std::variant<double, unary_func, binary_func, std::nullptr_t>;
+using unary_function = std::function<double(double)>;
+using binary_function = std::function<double(double, double)>;
+using function_variant = std::variant<double, unary_function, binary_function, std::nullptr_t>;
 
 struct Token
 {
@@ -61,6 +59,17 @@ struct Token
     }
 };
 
+// Определение шаблонной структуры overloaded для перегруженных функций
+template <typename... Ts>
+struct overloaded : Ts...
+{
+    using Ts::operator()...;
+};
+
+// Шаблонная функция для создания объекта overloaded с автоматическим выводом типов
+template <typename... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+
 namespace s21
 {
     class CalcModel
@@ -79,13 +88,17 @@ namespace s21
         std::stack<Token> stack;
         void MakeUnary();
         void ConvertToPostfix();
+        double PostfixNotationCalculation(double x_value);
 
     private:
         double answer_ = NAN;
         double x_ = NAN;
         std::string input_exp_;
+        std::vector<double> result_;
         std::map<std::string, Token> token_map_;
 
+        void PushToResult(double num);
+        double PopFromResult();
         // void Calculation();
         //  bool IsOperator(char c);
         //  bool IsPlusMinus(char с);

@@ -23,7 +23,7 @@ mytest:
 	@echo --------------------MYTEST-----------------------
 	$(GCC) -std=c++17 -o  calc model.cpp -lm -g
 	@./calc
-	@rm calc
+#	@rm calc
 
 cppcheck:
 	@echo -------------------CPPCHECK------------------------

@@ -203,14 +203,17 @@ int main()
     //  std::map<std::string, Token> token_map;
     CalcModel calc_model;
     //   calc_model.CreateTokenMap(token_map);
-    std::string str = "cos(1)+2*sin(0.5)";
+    std::string str = "5+2";
     calc_model.Parser(str);
     calc_model.ConvertToPostfix();
-    while (!calc_model.postfix_queue_.empty())
+    std::queue<Token> temp_queue{calc_model.postfix_queue_};
+    while (!temp_queue.empty())
     {
-        std::cout << calc_model.postfix_queue_.front().name_ << " "; // Выводим значение в начале очереди
-        calc_model.postfix_queue_.pop();                             // Удаляем значение из очереди
+        std::cout << temp_queue.front().name_ << " "; // Выводим значение в начале очереди
+        temp_queue.pop();                             // Удаляем значение из очереди
     }
+    double res = calc_model.PostfixNotationCalculation(0);
+    std::cout << res << std::endl;
     // std::cout << "Значения вектора:" << std::endl;
     // for (std::vector<Token>::size_type i = 0; i < calc_model.tokens_.size(); ++i)
     // {
@@ -218,6 +221,47 @@ int main()
     // }
     // std::cout << "\n"
     //           << std::endl;
+    return 0;
+}
+
+double CalcModel::PostfixNotationCalculation(double x_value)
+{
+    while (!postfix_queue_.empty())
+    {
+        std::visit(
+            overloaded{[&](double function)
+                       { PushToResult(function); },
+                       [&](unary_function function)
+                       {
+                           PushToResult(function(PopFromResult()));
+                       },
+                       [&](binary_function function)
+                       {
+                           double right_argument = PopFromResult();
+                           double left_argument = PopFromResult();
+                           PushToResult(function(left_argument, right_argument));
+                       },
+                       [&](auto)
+                       { PushToResult(x_value); }},
+            postfix_queue_.front().function_);
+        postfix_queue_.pop();
+    }
+    return PopFromResult();
+}
+
+void CalcModel::PushToResult(double num)
+{
+    result_.push_back(num);
+}
+
+double CalcModel::PopFromResult()
+{
+    if (!result_.empty())
+    {
+        double res = result_.back();
+        result_.pop_back();
+        return res;
+    }
     return 0;
 }
 
