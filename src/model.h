@@ -44,19 +44,6 @@ struct Token
     Associativity associativity_;
     Type type_;
     function_variant function_;
-
-    // Перегрузка оператора "<<" для вывода объектов Token в поток вывода
-    friend std::ostream &operator<<(std::ostream &os, const Token &token)
-    {
-        std::ostringstream oss;
-        oss << "Name: " << token.name_ << ", "
-            << "Precedence: " << token.precedence_ << ", "
-            << "Associativity: " << token.associativity_ << ", "
-            << "Type: " << token.type_ << ", ";
-
-        os << oss.str();
-        return os;
-    }
 };
 
 // Определение шаблонной структуры overloaded для перегруженных функций
@@ -77,27 +64,28 @@ namespace s21
     public:
         CalcModel();
         ~CalcModel() = default;
-        // double MainCalculation(std::string &str, double x);
-        //  int Validator(std::string &input_str);
-        void CalculateAnswer(const std::string input_exp, const std::string input_x);
+
+        void CalculateAnswer(const std::string input_str, const std::string input_x);
         double GetAnswer();
-        void Parser(const std::string input_exp);
+
+    private:
+        void Parser(const std::string input_str);
         void CreateTokenMap();
         std::queue<Token> tokens_;
         std::queue<Token> postfix_queue_;
         std::stack<Token> stack;
         void MakeUnary();
         void ConvertToPostfix();
-        double PostfixNotationCalculation(double x_value);
+        double PostfixNotationCalculation();
 
-    private:
         double answer_ = NAN;
+        // сделать функцию для x
         double x_ = NAN;
         std::string input_exp_;
         std::vector<double> result_;
         std::map<std::string, Token> token_map_;
         void CheckTokens();
-
+        void ClearTokens();
         void PushToResult(double num);
         double PopFromResult();
 

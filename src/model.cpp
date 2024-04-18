@@ -3,6 +3,14 @@
 #include <regex>
 using namespace s21;
 
+int main()
+{
+    CalcModel calc;
+    calc.CalculateAnswer("1/2+(2+3)/(sin(9-2)^2-6/7)", "");
+    //  ASSERT_EQ(calculator.GetError(), 0);
+    std::cout << calc.GetAnswer();
+}
+
 CalcModel::CalcModel()
 {
     CreateTokenMap();
@@ -11,6 +19,16 @@ CalcModel::CalcModel()
 double CalcModel::GetAnswer()
 {
     return answer_;
+}
+
+void CalcModel::CalculateAnswer(const std::string input_str, const std::string input_x)
+{
+    if (input_x != "")
+        x_ = std::stod(input_x);
+    ClearTokens();
+    Parser(input_str);
+    ConvertToPostfix();
+    answer_ = PostfixNotationCalculation();
 }
 
 void CalcModel::CreateTokenMap()
@@ -29,7 +47,7 @@ void CalcModel::CreateTokenMap()
         {"*", Token{"*", kMedium, kLeft, kBinaryOperator, std::multiplies<double>()}},
         {"/", Token{"/", kMedium, kLeft, kBinaryOperator, std::divides<double>()}},
         {"^", Token{"^", kHigh, kRight, kBinaryOperator, pow}},
-        {"mod", Token{"mod", kMedium, kLeft, kBinaryOperator, fmod}},
+        {"%", Token{"mod", kMedium, kLeft, kBinaryOperator, fmod}},
         {"cos", Token{"cos", kHigh, kRight, kUnaryFunction, cos}},
         {"sin", Token{"sin", kHigh, kRight, kUnaryFunction, sin}},
         {"tan", Token{"tan", kHigh, kRight, kUnaryFunction, tan}},
@@ -49,12 +67,13 @@ void CalcModel::CreateTokenMap()
     token_map_.insert(list);
 }
 
-void CalcModel::Parser(const std::string input_exp)
+void CalcModel::Parser(const std::string input_str)
 {
+
     std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|\\^|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
     std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
 
-    std::sregex_iterator iterator(input_exp.begin(), input_exp.end(), token_regex);
+    std::sregex_iterator iterator(input_str.begin(), input_str.end(), token_regex);
     std::sregex_iterator end;
 
     while (iterator != end)
@@ -62,14 +81,12 @@ void CalcModel::Parser(const std::string input_exp)
         std::smatch match = *iterator;
         std::string token = match.str();
 
-        // Проверяем, является ли токен числом
         bool is_number = std::regex_match(token, number_regex);
-
         if (is_number)
         {
             // Если токен - число, обрабатываем его соответственно
-            std::cout << "Number found: " << token << std::endl;
-            // Дополнительные действия с числом
+            // std::cout << "Number found: " << token << std::endl;
+            // // Дополнительные действия с числом
             Token number{token, kDefault, kNone, kNumber, std::stod(token)};
             tokens_.push(number);
         }
@@ -79,15 +96,12 @@ void CalcModel::Parser(const std::string input_exp)
             auto it = token_map_.find(token);
             if (it != token_map_.end())
             {
-                std::cout << "Token found: " << token << std::endl;
-                // Дополнительные действия с найденным токеном
+                // std::cout << "Token found: " << token << std::endl;
+                // // Дополнительные действия с найденным токеном
                 tokens_.push(it->second);
             }
             else
-            {
-                std::cout << "Token not found: " << token << std::endl;
-                // Дополнительные действия, если нужно
-            }
+                throw std::logic_error("Wrong Token " + token);
         }
 
         ++iterator;
@@ -98,7 +112,7 @@ void CalcModel::Parser(const std::string input_exp)
 // может быть оптимизирую на if, чтобы пропускать лишние символы
 void CalcModel::MakeUnary()
 {
-    Token unary_minus{"negate", kDefault, kNone, kNumber, std::negate<double>()};
+    Token unary_minus{"negate", kDefault, kNone, kUnaryOperator, std::negate<double>()};
 
     // Создаем пустую очередь для обработки
     std::queue<Token> temp_queue;
@@ -131,21 +145,6 @@ void CalcModel::MakeUnary()
     }
 }
 
-void PrintTokenMap(const std::map<std::string, Token> &token_map)
-{
-    std::cout << "Token Map:\n";
-    for (const auto &pair : token_map)
-    {
-        const std::string &key = pair.first;
-        const Token &token = pair.second;
-        std::cout << "Key: " << key << ", "
-                  << "Name: " << token.name_ << ", "
-                  << "Precedence: " << token.precedence_ << ", "
-                  << "Associativity: " << token.associativity_ << ", "
-                  << "Type: " << token.type_ << "\n";
-    }
-}
-
 void CalcModel::CheckTokens()
 {
     std::queue<Token> checked_tokens;
@@ -159,6 +158,7 @@ void CalcModel::CheckTokens()
             throw std::logic_error("Wrong sequence: " + checked_tokens.back().name_ +
                                    " " + tokens_.front().name_);
     }
+
     if (!CheckLastToken[tokens_.front().type_])
         throw std::logic_error("\"" + checked_tokens.back().name_ + "\" can't be at the end of the example");
     checked_tokens.push(tokens_.front());
@@ -205,7 +205,6 @@ void CalcModel::ConvertToPostfix()
             tokens_.pop();
             break;
         }
-        // std::cout << "Stack" << stack.top() << "\n";
     }
     while (!stack.empty())
     {
@@ -214,7 +213,7 @@ void CalcModel::ConvertToPostfix()
     }
 }
 
-double CalcModel::PostfixNotationCalculation(double x_value)
+double CalcModel::PostfixNotationCalculation()
 {
     while (!postfix_queue_.empty())
     {
@@ -232,7 +231,7 @@ double CalcModel::PostfixNotationCalculation(double x_value)
                            PushToResult(function(left_argument, right_argument));
                        },
                        [&](auto)
-                       { PushToResult(x_value); }},
+                       { PushToResult(x_); }},
             postfix_queue_.front().function_);
         postfix_queue_.pop();
         std::cout << "Res:" << result_.back() << std::endl;
@@ -257,22 +256,30 @@ double CalcModel::PopFromResult()
     return 0;
 }
 
-// 2+ cos(0.5)*5.6
-int main()
+void CalcModel::ClearTokens()
 {
-    CalcModel calc_model;
-    std::string str = "2+ cos(0.5)*5.6";
-    calc_model.Parser(str);
-    calc_model.ConvertToPostfix();
-    std::queue<Token> temp_queue{calc_model.postfix_queue_};
-    while (!temp_queue.empty())
+    while (!tokens_.empty())
     {
-        std::cout << temp_queue.front().name_ << " "; // Выводим значение в начале очереди
-        temp_queue.pop();                             // Удаляем значение из очереди
+        tokens_.pop();
     }
-    double res = calc_model.PostfixNotationCalculation(0);
-    std::cout << "\n"
-              << res << std::endl;
-    return 0;
 }
-// ответ 0.9
+
+// // 2+ cos(0.5)*5.6
+// int main()
+// {
+//     CalcModel calc_model;
+//     std::string str = "2+ cos(0.5)*5.6";
+//     calc_model.Parser(str);
+//     calc_model.ConvertToPostfix();
+//     std::queue<Token> temp_queue{calc_model.postfix_queue_};
+//     while (!temp_queue.empty())
+//     {
+//         std::cout << temp_queue.front().name_ << " "; // Выводим значение в начале очереди
+//         temp_queue.pop();                             // Удаляем значение из очереди
+//     }
+//     double res = calc_model.PostfixNotationCalculation(0);
+//     std::cout << "\n"
+//               << res << std::endl;
+//     return 0;
+// }
+// // ответ 0.9

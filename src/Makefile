@@ -14,12 +14,13 @@ s21_matrix.a:
 	ar rcs matrix.a matrix.o
 
 test: clean
-	$(GCC) $(GCOV) -c s21_*.cc
-	$(GCC) -c test.cc $(CHECKFLAGS)
-	$(GCC) $(GCOV) -o matrix_test test.o s21_*.o $(CHECKFLAGS) -g
-	./matrix_test
+	$(GCC) $(GCOV) -c model.cpp
+	$(GCC) -c tests.cpp $(CHECKFLAGS)
+	$(GCC) $(GCOV) -o calc_test tests.o model.o $(CHECKFLAGS) -g
+	./calc_test
+
 #main.cpp 
-mytest: 
+mytest:
 	@echo --------------------MYTEST-----------------------
 	$(GCC) -std=c++17 -o  calc model.cpp -lm -g
 	@./calc
