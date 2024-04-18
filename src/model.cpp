@@ -30,18 +30,18 @@ void CalcModel::CreateTokenMap()
         {"/", Token{"/", kMedium, kLeft, kBinaryOperator, std::divides<double>()}},
         {"^", Token{"^", kHigh, kRight, kBinaryOperator, pow}},
         {"mod", Token{"mod", kMedium, kLeft, kBinaryOperator, fmod}},
-        {"cos", Token{"cos", kHigh, kRight, kFunction, cos}},
-        {"sin", Token{"sin", kHigh, kRight, kFunction, sin}},
-        {"tan", Token{"tan", kHigh, kRight, kFunction, tan}},
-        {"acos", Token{"acos", kHigh, kRight, kFunction, acos}},
-        {"asin", Token{"asin", kHigh, kRight, kFunction, asin}},
-        {"atan", Token{"atan", kHigh, kRight, kFunction, atan}},
-        {"sqrt", Token{"sqrt", kHigh, kRight, kFunction, sqrt}},
-        {"ln", Token{"ln", kHigh, kRight, kFunction, log}},
-        {"log", Token{"log", kHigh, kRight, kFunction, log10}},
-        {"exp", Token{"exp", kHigh, kRight, kFunction, exp}},
-        {"abs", Token{"abs", kHigh, kRight, kFunction, fabs}},
-        {"round", Token{"round", kHigh, kRight, kFunction, round}},
+        {"cos", Token{"cos", kHigh, kRight, kUnaryFunction, cos}},
+        {"sin", Token{"sin", kHigh, kRight, kUnaryFunction, sin}},
+        {"tan", Token{"tan", kHigh, kRight, kUnaryFunction, tan}},
+        {"acos", Token{"acos", kHigh, kRight, kUnaryFunction, acos}},
+        {"asin", Token{"asin", kHigh, kRight, kUnaryFunction, asin}},
+        {"atan", Token{"atan", kHigh, kRight, kUnaryFunction, atan}},
+        {"sqrt", Token{"sqrt", kHigh, kRight, kUnaryFunction, sqrt}},
+        {"ln", Token{"ln", kHigh, kRight, kUnaryFunction, log}},
+        {"log", Token{"log", kHigh, kRight, kUnaryFunction, log10}},
+        {"exp", Token{"exp", kHigh, kRight, kUnaryFunction, exp}},
+        {"abs", Token{"abs", kHigh, kRight, kUnaryFunction, fabs}},
+        {"round", Token{"round", kHigh, kRight, kUnaryFunction, round}},
         {"e", Token{"e", kDefault, kNone, kNumber, M_E}},
         {"pi", Token{"pi", kDefault, kNone, kNumber, M_PI}},
         {"inf", Token{"inf", kDefault, kNone, kNumber, INFINITY}},
@@ -146,8 +146,29 @@ void PrintTokenMap(const std::map<std::string, Token> &token_map)
     }
 }
 
+void CalcModel::CheckTokens()
+{
+    std::queue<Token> checked_tokens;
+    bool error = 0;
+    if (!CheckFirstToken[tokens_.front().type_])
+        error = 1;
+    while (tokens_.size() != 1)
+    {
+        checked_tokens.push(tokens_.front());
+        tokens_.pop();
+        if (!SuitableTypesMatrix_[checked_tokens.back().type_][tokens_.front().type_])
+            error = 1;
+    }
+    if (!CheckLastToken[tokens_.front().type_])
+        error = 1;
+    if (error)
+        throw std::logic_error("Wrong sequence");
+    tokens_ = checked_tokens;
+}
+
 void CalcModel::ConvertToPostfix()
 {
+    CheckTokens();
     while (!tokens_.empty())
     {
         switch (tokens_.front().type_)
@@ -157,7 +178,7 @@ void CalcModel::ConvertToPostfix()
             tokens_.pop();
             break;
         case Type::kUnaryOperator:
-        case Type::kFunction:
+        case Type::kUnaryFunction:
         case Type::kOpenBracket:
             stack.push(tokens_.front());
             tokens_.pop();
@@ -174,7 +195,7 @@ void CalcModel::ConvertToPostfix()
             break;
         case Type::kBinaryOperator:
             while (!stack.empty() &&
-                   (stack.top().type_ == kFunction &&
+                   (stack.top().type_ == kUnaryFunction &&
                     (stack.top().precedence_ > tokens_.front().precedence_ ||
                      (stack.top().precedence_ == tokens_.front().precedence_ && stack.top().associativity_ == kLeft))))
             {
@@ -241,7 +262,7 @@ double CalcModel::PopFromResult()
 int main()
 {
     CalcModel calc_model;
-    std::string str = "2+ cos(0.5)*5.6";
+    std::string str = ")2+ 3-4";
     calc_model.Parser(str);
     calc_model.ConvertToPostfix();
     std::queue<Token> temp_queue{calc_model.postfix_queue_};

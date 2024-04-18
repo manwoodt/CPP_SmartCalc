@@ -14,7 +14,7 @@ enum Type
     kNumber,
     kUnaryOperator,
     kBinaryOperator,
-    kFunction,
+    kUnaryFunction,
     kOpenBracket,
     kCloseBracket,
 };
@@ -96,30 +96,21 @@ namespace s21
         std::string input_exp_;
         std::vector<double> result_;
         std::map<std::string, Token> token_map_;
+        void CheckTokens();
 
         void PushToResult(double num);
         double PopFromResult();
-        // void Calculation();
-        //  bool IsOperator(char c);
-        //  bool IsPlusMinus(char с);
-        //  bool IsNumber(char с);
+
+        bool CheckFirstToken[6] = {1, 1, 0, 1, 1, 0};
+        bool CheckLastToken[6] = {1, 0, 0, 0, 0, 1};
+        bool SuitableTypesMatrix_[6][6] = {
+            {0, 0, 1, 0, 0, 1}, // kNumber ./
+            {1, 0, 0, 1, 1, 0}, // kUnaryOperator ./
+            {1, 0, 0, 1, 1, 0}, // kBinaryOperator ./
+            {0, 0, 0, 0, 1, 0}, // kUnaryFunction ./
+            {1, 1, 0, 1, 1, 0}, // kOpenBracket ./
+            {0, 0, 1, 0, 0, 1}, // kCloseBracket ./
+        };
     };
 }
 #endif
-
-/*
-        class Token
-        {
-        public:
-            Token() = default;
-            ~Token() = default;
-
-        private:
-            std::string name_;
-            Precedence precendence_;
-            Associativity associativity_;
-            Type type_;
-            function_variant function_;
-
-            void CreateTokenMap(std::map<std::string, Token> &token_map);
-        };*/
