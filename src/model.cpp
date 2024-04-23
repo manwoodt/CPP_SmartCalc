@@ -14,9 +14,8 @@ double CalcModel::GetAnswer()
 
 void CalcModel::CalculateAnswer(const std::string input_str, const std::string input_x)
 {
-    if (input_x != "")
-        x_ = std::stod(input_x);
     ClearTokens();
+    CheckX(input_x);
     Parser(input_str);
     ConvertToPostfix();
     answer_ = PostfixNotationCalculation();
@@ -58,9 +57,18 @@ void CalcModel::CreateTokenMap()
     token_map_.insert(list);
 }
 
+void CalcModel::CheckX(const std::string input_x)
+{
+    std::regex x_regex(R"(^-?\d+(\.\d+)?(?:[eE][-+]?\d+)?$)");
+    if (std::regex_match(input_x, x_regex))
+    {
+        x_ = std::stod(input_x);
+    }
+}
+
 void CalcModel::Parser(const std::string input_str)
 {
-
+    // поменять регулярку
     std::regex token_regex("[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/|\\^|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
     std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
 

@@ -3,6 +3,6 @@ using namespace s21;
 int main()
 {
     CalcModel calc;
-    calc.CalculateAnswer("(-1.2)-1.2-2.4-4.8", "");
+    calc.CalculateAnswer("2^2.3^0.5^3.456", "");
     std::cout << calc.GetAnswer();
 }

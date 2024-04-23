@@ -75,6 +75,7 @@ namespace s21
 
     private:
         void Parser(const std::string input_str);
+        void CheckX(const std::string input_x);
         void CreateTokenMap();
         void MakeUnary();
         void ConvertToPostfix();

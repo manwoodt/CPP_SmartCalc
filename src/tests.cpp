@@ -4,14 +4,6 @@
 
 s21::CalcModel calc;
 
-// TEST(CalculatorControllerTest, test_0)
-// {
-//     calc.CalculateAnswer("-(1+3*(5%3+100))/50/1*20+-(50^2*(5+3^2)%(3*2)+31*20/(10*-5^(2+1)))+39^2*48*10*123-50-10",
-//                          "");
-//     double result = calc.GetAnswer();
-//     ASSERT_EQ(result, 89799655.696);
-// }
-
 TEST(CalculatorControllerTest, Test_1)
 {
     calc.CalculateAnswer("(2+3)*5^2", "");
@@ -59,6 +51,19 @@ TEST(CalculatorControllerTest, Test_7)
     calc.CalculateAnswer("(12)*(-1.0006)", "");
     //  ASSERT_EQ(calculator.GetError(), 0);
     ASSERT_NEAR(calc.GetAnswer(), -12.0072, 1e-6);
+}
+
+TEST(CalculatorControllerTest, Test_8)
+{
+    calc.CalculateAnswer("2^2.3^0.5^3.456", "");
+    ASSERT_NEAR(calc.GetAnswer(), 2.11235741575, 1e-6);
+}
+
+TEST(CalculatorXTest, Test_9)
+{
+    calc.CalculateAnswer("256-x", "1.5e+2");
+    //  ASSERT_EQ(calculator.GetError(), 0);
+    ASSERT_NEAR(calc.GetAnswer(), 106, 1e-6);
 }
 
 int main(int argc, char **argv)
