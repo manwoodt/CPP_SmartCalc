@@ -15,6 +15,7 @@ void CalcModel::CalculateAnswer(const std::string input_str,
   answer_ = PostfixNotationCalculation();
 }
 
+// почему l надо добавить
 void CalcModel::CreateTokenMap() {
   using std::initializer_list;
   using std::pair;
@@ -31,20 +32,20 @@ void CalcModel::CreateTokenMap() {
        Token{"*", kMedium, kLeft, kBinaryOperator, std::multiplies<double>()}},
       {"/",
        Token{"/", kMedium, kLeft, kBinaryOperator, std::divides<double>()}},
-      {"^", Token{"^", kHigh, kRight, kBinaryOperator, pow}},
-      {"%", Token{"mod", kMedium, kLeft, kBinaryOperator, fmod}},
-      {"cos", Token{"cos", kHigh, kRight, kUnaryFunction, cos}},
-      {"sin", Token{"sin", kHigh, kRight, kUnaryFunction, sin}},
-      {"tan", Token{"tan", kHigh, kRight, kUnaryFunction, tan}},
-      {"acos", Token{"acos", kHigh, kRight, kUnaryFunction, acos}},
-      {"asin", Token{"asin", kHigh, kRight, kUnaryFunction, asin}},
-      {"atan", Token{"atan", kHigh, kRight, kUnaryFunction, atan}},
-      {"sqrt", Token{"sqrt", kHigh, kRight, kUnaryFunction, sqrt}},
-      {"ln", Token{"ln", kHigh, kRight, kUnaryFunction, log}},
-      {"log", Token{"log", kHigh, kRight, kUnaryFunction, log10}},
-      {"exp", Token{"exp", kHigh, kRight, kUnaryFunction, exp}},
-      {"abs", Token{"abs", kHigh, kRight, kUnaryFunction, fabs}},
-      {"round", Token{"round", kHigh, kRight, kUnaryFunction, round}},
+      {"^", Token{"^", kHigh, kRight, kBinaryOperator, powl}},
+      {"%", Token{"mod", kMedium, kLeft, kBinaryOperator, fmodl}},
+      {"cos", Token{"cos", kHigh, kRight, kUnaryFunction, cosl}},
+      {"sin", Token{"sin", kHigh, kRight, kUnaryFunction, sinl}},
+      {"tan", Token{"tan", kHigh, kRight, kUnaryFunction, tanl}},
+      {"acos", Token{"acos", kHigh, kRight, kUnaryFunction, acosl}},
+      {"asin", Token{"asin", kHigh, kRight, kUnaryFunction, asinl}},
+      {"atan", Token{"atan", kHigh, kRight, kUnaryFunction, atanl}},
+      {"sqrt", Token{"sqrt", kHigh, kRight, kUnaryFunction, sqrtl}},
+      {"ln", Token{"ln", kHigh, kRight, kUnaryFunction, logl}},
+      {"log", Token{"log", kHigh, kRight, kUnaryFunction, log10l}},
+      {"exp", Token{"exp", kHigh, kRight, kUnaryFunction, expl}},
+      {"abs", Token{"abs", kHigh, kRight, kUnaryFunction, fabsl}},
+      {"round", Token{"round", kHigh, kRight, kUnaryFunction, roundl}},
       {"e", Token{"e", kDefault, kNone, kNumber, M_E}},
       {"pi", Token{"pi", kDefault, kNone, kNumber, M_PI}},
       {"inf", Token{"inf", kDefault, kNone, kNumber, INFINITY}},

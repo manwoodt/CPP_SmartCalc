@@ -1,21 +1,23 @@
-#ifdef CALC_CONTROLLER_H
+#ifndef CALC_CONTROLLER_H
 #define CALC_CONTROLLER_H
 
 #include <string>
 
-namespace s21
-{
-    class Controller
-    {
-    private:
-    public:
-        Controller();
-        ~Controller();
+#include "../model/model.h"
 
-        void CalculateValue(MainWindow *main_window);
-    };
+namespace s21 {
+class Controller {
+ public:
+  //Controller();
+  Controller(s21::CalcModel *C) : Calc_(C){};
+  ~Controller();
 
-    Controller::Controller();
-    Controller::~Controller();
+ // void CalculateValue(view *view);
 
-#endif CALC_CONTROLLER_H
+ private:
+  s21::CalcModel *Calc_;
+};
+
+}  // namespace s21
+
+#endif
