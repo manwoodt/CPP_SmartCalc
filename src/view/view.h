@@ -4,7 +4,7 @@
 #include <QMainWindow>
 // #include <QDoubleValidator>
 // #include <QMessageBox>
-// #include <qcustomplot.h>
+ #include <qcustomplot.h>
 
 #include "../controller/controller.h"
 // #include "credit_calc.h"
@@ -12,7 +12,7 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class View;
+class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -21,22 +21,25 @@ class View : public QMainWindow {
   Q_OBJECT
 
  public:
-  View(QWidget *parent = nullptr);
-  View(s21::Controller *c) : controller(c){};
+ // View(QWidget *parent = nullptr);
+  View(s21::Controller *c = nullptr);
   ~View();
 
  private:
-  Ui::View *ui;
-  s21::Controller *controller;
+  Ui::MainWindow *ui;
+  s21::Controller *controller_;
   //    Credit_calc *credit_Window;
   //    Deposit_calc *deposit_Window;
 
+  std::string GetInputString();
+  void SetAnswer(double x);
+
  private slots:
       void digits_numbers();
-  //    void math_func();
-  //    void delete_all_text();
-  //    void backspace();
-  //    void equal();
+      void math_func();
+      void delete_all_text();
+      void backspace();
+      void equal();
   //    void credit_window();
   //    void deposit_window();
   //    void draw_graph();

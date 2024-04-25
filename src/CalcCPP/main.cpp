@@ -21,7 +21,11 @@ int main(int argc, char *argv[]) {
 
   s21::CalcModel calc;
   s21::Controller controller(&calc);
-  s21::View view(&controller);
-  view.show();
+  s21::View view1(&controller);
+  view1.setWindowTitle("Calc");
+  view1.show();
+//  s21::View view2;
+//  view2.show();
+
   return a.exec();
 }

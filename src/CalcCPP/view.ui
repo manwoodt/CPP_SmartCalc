@@ -17,36 +17,6 @@
    <string notr="true">background: rgb(87, 231, 146);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="result">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>361</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel {
-  qproperty-alignment: 'AlignVCenter | AlignRight';
-  border: 1px solid gray;
-color: black;
-border-top-right-radius: 30px;
-border-top-left-radius: 30px;
-border-bottom-right-radius: 30px;
-border-bottom-left-radius: 30px;
-}
-
-background-color : white;
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_C">
     <property name="geometry">
      <rect>
@@ -1182,7 +1152,7 @@ border-bottom-left-radius: 30px;
 </string>
     </property>
     <property name="maxLength">
-     <number>9</number>
+     <number>10</number>
     </property>
     <property name="frame">
      <bool>true</bool>
@@ -1222,16 +1192,6 @@ color: black;
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QCustomPlot" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>20</y>
-      <width>431</width>
-      <height>371</height>
-     </rect>
     </property>
    </widget>
    <widget class="QFrame" name="frame">
@@ -1315,7 +1275,7 @@ color: black;
       <double>10.000000000000000</double>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="frame_step">
      <property name="geometry">
       <rect>
        <x>310</x>
@@ -1343,7 +1303,7 @@ border-bottom-left-radius: 10px;
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="frame_y_min">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -1371,7 +1331,7 @@ border-bottom-left-radius: 10px;
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="frame_x_min">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1421,7 +1381,7 @@ border-bottom-left-radius: 10px;
       <double>-5.000000000000000</double>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="frame_y_max">
      <property name="geometry">
       <rect>
        <x>220</x>
@@ -1471,7 +1431,7 @@ border-bottom-left-radius: 10px;
       <double>10.000000000000000</double>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="frame_x_max">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -1500,16 +1460,40 @@ border-bottom-left-radius: 10px;
      </property>
     </widget>
    </widget>
+   <widget class="QLineEdit" name="InputString">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>361</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+  qproperty-alignment: 'AlignVCenter | AlignRight';
+  border: 1px solid gray;
+color: black;
+border-top-right-radius: 30px;
+border-top-left-radius: 30px;
+border-bottom-right-radius: 30px;
+border-bottom-left-radius: 30px;
+}
+
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="maxLength">
+     <number>255</number>
+    </property>
+    <property name="frame">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QCustomPlot</class>
-   <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

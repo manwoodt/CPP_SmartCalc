@@ -2,7 +2,10 @@
 
 #include "./ui_view.h"
 
-s21::View::View(QWidget *parent) : QMainWindow(parent), ui(new Ui::View) {
+//s21::View::View(QWidget *parent) : QMainWindow(parent)
+
+s21::View::View(s21::Controller *controller) : QMainWindow(), ui(new Ui::MainWindow) {
+    this->controller_ = controller;
   ui->setupUi(this);
 
   // QDoubleValidator double_validator;
@@ -61,27 +64,51 @@ s21::View::View(QWidget *parent) : QMainWindow(parent), ui(new Ui::View) {
           SLOT(deposit_window()));
 }
 
-s21::ViewV::~View() { delete ui; }
+s21::View::~View() { delete ui; }
+
+std::string s21::View::GetInputString(){
+return ui->InputString->text().toStdString();
+}
+
 
 void s21::View::digits_numbers() {
   QPushButton *button = (QPushButton *)sender();
-  ui->result->setText(ui->result->text() + button->text());
+  ui->InputString->setText(ui->InputString->text() + button->text());
 }
 
-// void MainWindow::math_func() {
-//   QPushButton *button = (QPushButton *)sender();
-//   ui->result->setText(ui->result->text() + button->text() + "(");
-// }
+ void s21::View::math_func() {
+   QPushButton *button = (QPushButton *)sender();
+   ui->InputString->setText(ui->InputString->text() + button->text() + "(");
+ }
 
-// void MainWindow::delete_all_text() {
-//   ui->result->clear();
-//   ui->insert_x->clear();
-// }
+ void s21::View::delete_all_text() {
+   ui->InputString->clear();
+   ui->insert_x->clear();
+ }
 
-// void MainWindow::equal() {
+ void s21::View::equal() {
+     QString expr = ui->InputString->text();
+          QString x_expr = ui->insert_x->text();
+     if (expr.contains("x") && x_expr.isEmpty()) {
+       QMessageBox::warning(this, "Внимание!", "Введите значение x в поле ввода");
+       return;
+     } else {
+         try{
+    controller_->CalculateValue(expr.toStdString(), x_expr.toStdString());
+    SetAnswer(controller_->GetAnswer());
+         } catch (const std::exception &e){
+             QMessageBox::critical(this, "Внимание!", e.what());
+         }
+}
+
+}
+ void s21::View::SetAnswer(double x){
+   ui->InputString->setText(QString::number(x,'g',16));
+ }
+
 //   int is_there_x = 0;
 //   int good_exp_with_x = 0;
-//   QByteArray expression = ui->result->text().toLocal8Bit();
+//   QByteArray expression = ui->InputString->text().toLocal8Bit();
 //   QByteArray x_value = ui->insert_x->text().toLocal8Bit();
 //   char *input_x = x_value.data();
 //   if (expression.contains('x')) is_there_x = 1;
@@ -97,8 +124,8 @@ void s21::View::digits_numbers() {
 
 //  if (is_correct == 0) {
 //    res_num = parser(changed_input_expr, input_x);
-//    QString result_value = QString::number(res_num, 'g', 15);
-//    ui->result->setText(result_value);
+//    QString InputString_value = QString::number(res_num, 'g', 15);
+//    ui->InputString->setText(InputString_value);
 //  } else {
 //    QString err_str = "";
 //    if (is_correct == 1)
@@ -112,33 +139,33 @@ void s21::View::digits_numbers() {
 
 //    QMessageBox::warning(this, "error", err_str);
 //  }
-//}
 
-// void MainWindow::backspace() {
-//   QString text = ui->result->text();
-//   if (text == "error")
-//     ui->result->setText("");
-//   else if (!text.isEmpty()) {
-//     QString lastChar = text.right(4);
-//     if (lastChar == "asin" || lastChar == "acos" || lastChar == "atan" ||
-//         lastChar == "sqrt") {
-//       text = text.left(text.length() - 4);
-//     } else {
-//       lastChar = text.right(3);
-//       if (lastChar == "sin" || lastChar == "cos" || lastChar == "tan" ||
-//           lastChar == "log") {
-//         text = text.left(text.length() - 3);
-//       } else {
-//         lastChar = text.right(2);
-//         if (lastChar == "ln")
-//           text = text.left(text.length() - 2);
-//         else
-//           text = text.left(text.length() - 1);
-//       }
-//     }
-//     ui->result->setText(text);
-//   }
-// }
+
+ void s21::View::backspace() {
+   QString text = ui->InputString->text();
+   if (text == "error")
+     ui->InputString->setText("");
+   else if (!text.isEmpty()) {
+     QString lastChar = text.right(4);
+     if (lastChar == "asin" || lastChar == "acos" || lastChar == "atan" ||
+         lastChar == "sqrt") {
+       text = text.left(text.length() - 4);
+     } else {
+       lastChar = text.right(3);
+       if (lastChar == "sin" || lastChar == "cos" || lastChar == "tan" ||
+           lastChar == "log") {
+         text = text.left(text.length() - 3);
+       } else {
+         lastChar = text.right(2);
+         if (lastChar == "ln")
+           text = text.left(text.length() - 2);
+         else
+           text = text.left(text.length() - 1);
+       }
+     }
+     ui->InputString->setText(text);
+   }
+ }
 
 // void MainWindow::credit_window() {
 //   credit_Window->show();
@@ -164,7 +191,7 @@ void s21::View::digits_numbers() {
 
 //  int is_there_x = 0;
 //  int good_exp_with_x = 0;
-//  QByteArray expression = ui->result->text().toLocal8Bit();
+//  QByteArray expression = ui->InputString->text().toLocal8Bit();
 //  QByteArray x_value = ui->insert_x->text().toLocal8Bit();
 //  char *input_x = x_value.data();
 //   char *input_expr = expression.data();
