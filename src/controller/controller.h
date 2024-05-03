@@ -13,6 +13,9 @@ class Controller {
  // ~Controller();
 
  void CalculateValue(std::string input_str, std::string x);
+ XYGraph CalculateGraph(const std::string input_str,
+                        double step, double x_start,
+                        double x_end);
  double GetAnswer();
 
  private:

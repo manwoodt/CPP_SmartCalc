@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>832</width>
+    <width>799</width>
     <height>497</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: rgb(87, 231, 146);</string>
+   <string notr="true">background: qlineargradient(spread:pad, x1:0.315044, y1:0.290136, x2:0.630542, y2:0.744318, stop:0 rgba(24, 150, 93, 219), stop:0.871921 rgba(184, 255, 104, 211));</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_C">
@@ -1147,6 +1147,7 @@ border-top-right-radius: 30px;
 border-top-left-radius: 30px;
 border-bottom-right-radius: 30px;
 border-bottom-left-radius: 30px;
+background: rgb(185, 255, 104)
 }
 
 </string>
@@ -1180,7 +1181,7 @@ border-bottom-left-radius: 30px;
      <string notr="true">QLabel {
 
 color: black;
-
+background:rgb(32, 151, 93)
 }
 </string>
     </property>
@@ -1203,6 +1204,9 @@ color: black;
       <height>81</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background: qradialgradient(spread:repeat, cx:0.0470936, cy:0.841136, radius:0.5, fx:0.546554, fy:0.847448, stop:0.512315 rgba(145, 228, 32, 255), stop:0.827586 rgba(215, 246, 106, 255))</string>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
@@ -1220,6 +1224,9 @@ color: black;
      </property>
      <property name="styleSheet">
       <string notr="true">color:black;</string>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
      </property>
      <property name="maximum">
       <double>10.990000000000000</double>
@@ -1478,6 +1485,7 @@ border-top-right-radius: 30px;
 border-top-left-radius: 30px;
 border-bottom-right-radius: 30px;
 border-bottom-left-radius: 30px;
+background: rgb(185, 255, 104);
 }
 
 </string>
@@ -1492,8 +1500,26 @@ border-bottom-left-radius: 30px;
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QCustomPlot" name="Graph" native="true">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>10</y>
+      <width>381</width>
+      <height>381</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

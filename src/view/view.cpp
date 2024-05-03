@@ -1,11 +1,9 @@
 #include "view.h"
 
-#include "./ui_view.h"
-
 //s21::View::View(QWidget *parent) : QMainWindow(parent)
 
-s21::View::View(s21::Controller *controller) : QMainWindow(), ui(new Ui::MainWindow) {
-    this->controller_ = controller;
+s21::View::View(s21::Controller *controller, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),controller_(controller) {
+   // this->controller_ = controller;
   ui->setupUi(this);
 
   // QDoubleValidator double_validator;
@@ -106,40 +104,6 @@ void s21::View::digits_numbers() {
    ui->InputString->setText(QString::number(x,'g',16));
  }
 
-//   int is_there_x = 0;
-//   int good_exp_with_x = 0;
-//   QByteArray expression = ui->InputString->text().toLocal8Bit();
-//   QByteArray x_value = ui->insert_x->text().toLocal8Bit();
-//   char *input_x = x_value.data();
-//   if (expression.contains('x')) is_there_x = 1;
-//   if (!x_value.isEmpty()) {
-//     good_exp_with_x = is_good_expression(input_x);
-//   }
-//   char *input_expr = expression.data();
-//   char changed_input_expr[255]{0};
-
-//  int is_correct =
-//      validator(input_expr, changed_input_expr, is_there_x, good_exp_with_x);
-//  double res_num = 0;
-
-//  if (is_correct == 0) {
-//    res_num = parser(changed_input_expr, input_x);
-//    QString InputString_value = QString::number(res_num, 'g', 15);
-//    ui->InputString->setText(InputString_value);
-//  } else {
-//    QString err_str = "";
-//    if (is_correct == 1)
-//      err_str = "Ошибка: Неверный ввод";
-//    else if (is_correct == 2)
-//      err_str = "Ошибка: Ошибка со скобками";
-//    else if (is_correct == 3)
-//      err_str = "Ошибка: Ошибка с вводом х";
-//    else if (is_correct == 4)
-//      err_str = "Ошибка: Отсутствует число/значение x";
-
-//    QMessageBox::warning(this, "error", err_str);
-//  }
-
 
  void s21::View::backspace() {
    QString text = ui->InputString->text();
@@ -177,7 +141,31 @@ void s21::View::digits_numbers() {
 //   this->close();
 // }
 
-// void MainWindow::draw_graph() {
+ void s21::View::draw_graph() {
+  XYGraph result;
+
+   ui->Graph->clearGraphs();
+   double x_min = ui->doubleSpinBox_x_min->text().toDouble();
+   double x_max = ui->doubleSpinBox_x_max->text().toDouble();
+   double y_min = ui->doubleSpinBox_y_min->text().toDouble();
+   double y_max = ui->doubleSpinBox_y_max->text().toDouble();
+   double step = ui->doubleSpinBox_step->text().toDouble();
+ //  int num = ui->spinBox_number_of_points->text().toInt();
+   QString expr = ui->InputString->text();
+   ui->Graph->xAxis->setRange(x_min, x_max);
+   ui->Graph->yAxis->setRange(y_min, y_max);
+  result = controller_->CalculateGraph(expr.toStdString(),step,x_min,x_max);
+  QVector<double> vec_x(result.first.begin(), result.first.end());
+  QVector<double> vec_y(result.second.begin(), result.second.end());
+
+        ui->Graph->addGraph();
+        ui->Graph->graph(0)->addData(vec_x, vec_y);
+        ui->Graph->replot();
+        vec_x.clear();
+        vec_y.clear();
+  // ui->Graph->graph(0)->setData(vec_x, vec_y);
+ }
+
 //   ui->widget->clearGraphs();
 //   double x_min = ui->doubleSpinBox_x_min->text().toDouble();
 //   double x_max = ui->doubleSpinBox_x_max->text().toDouble();

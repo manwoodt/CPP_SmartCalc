@@ -6,6 +6,8 @@ CalcModel::CalcModel() { CreateTokenMap(); }
 
 double CalcModel::GetAnswer() const { return answer_; }
 
+XYGraph CalcModel::GetGraph() const { return answer_graph_; }
+
 void CalcModel::CalculateAnswer(const std::string input_str,
                                 const std::string input_x) {
   ClearTokens();
@@ -13,6 +15,14 @@ void CalcModel::CalculateAnswer(const std::string input_str,
   Parser(input_str);
   ConvertToPostfix();
   answer_ = PostfixNotationCalculation();
+}
+
+void CalcModel::CalculateGraph(const std::string input_str, double step,
+                               double x_start, double x_end) {
+  ClearTokens();
+  Parser(input_str);
+  ConvertToPostfix();
+  CalculateXY(step, x_start, x_end);
 }
 
 void CalcModel::CreateTokenMap() {
@@ -233,37 +243,14 @@ void CalcModel::ClearTokens() {
   }
 }
 
-XYGraph CalcModel::GetGraph() const { return answer_graph_; }
-
-void CalcModel::CalculateXY(int number_of_points, double x_start, double x_end,
-                            double y_min, double y_max) {
+void CalcModel::CalculateXY(double step, double x_min, double x_max) {
   std::vector<double> x_values, y_values;
-  double step = (x_end - x_start) / (number_of_points - 1);
-  for (int i = 0; i < number_of_points; ++i) {
-    x_values.push_back(x_start + step);
+  std::queue<Token> const_postfix_queue = postfix_queue_;
+  for (double current_x = x_min; current_x < x_max; current_x += step) {
+    x_values.push_back(current_x);
     x_ = x_values.back();
+    postfix_queue_ = const_postfix_queue;
     y_values.push_back(PostfixNotationCalculation());
   }
   answer_graph_ = std::make_pair(x_values, y_values);
 }
-
-// // 2+ cos(0.5)*5.6
-// int main()
-// {
-//     CalcModel calc_model;
-//     std::string str = "2+ cos(0.5)*5.6";
-//     calc_model.Parser(str);
-//     calc_model.ConvertToPostfix();
-//     std::queue<Token> temp_queue{calc_model.postfix_queue_};
-//     while (!temp_queue.empty())
-//     {
-//         std::cout << temp_queue.front().name_ << " "; // Выводим значение в
-//         начале очереди temp_queue.pop();                             //
-//         Удаляем значение из очереди
-//     }
-//     double res = calc_model.PostfixNotationCalculation(0);
-//     std::cout << "\n"
-//               << res << std::endl;
-//     return 0;
-// }
-// // ответ 0.9

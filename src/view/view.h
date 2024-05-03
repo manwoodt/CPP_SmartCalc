@@ -3,12 +3,13 @@
 
 #include <QMainWindow>
 // #include <QDoubleValidator>
-// #include <QMessageBox>
- #include <qcustomplot.h>
+ #include <QMessageBox>
+// #include "qcustomplot.h"
 
 #include "../controller/controller.h"
 // #include "credit_calc.h"
 // #include "deposit_calc.h"
+#include "ui_view.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +23,7 @@ class View : public QMainWindow {
 
  public:
  // View(QWidget *parent = nullptr);
-  View(s21::Controller *c = nullptr);
+  View(s21::Controller *c ,QWidget *parent = nullptr);
   ~View();
 
  private:
@@ -42,7 +43,7 @@ class View : public QMainWindow {
       void equal();
   //    void credit_window();
   //    void deposit_window();
-  //    void draw_graph();
+      void draw_graph();
 };
 }  // namespace s21
 #endif  // VIEW_H

@@ -1,5 +1,5 @@
 CC=g++ -std=c++17 
-GCC =$(CC) -Wall -Wextra -Werror -g
+GCC =$(CC) -Wall -Wextra  -g
 CHECKFLAGS=-lgtest
 GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
 OS = $(shell uname)
@@ -23,7 +23,7 @@ test:
 #main.cpp 
 mytest:
 	@echo --------------------MYTEST-----------------------
-	$(GCC) -std=c++17 -o  calc model.cpp main.cpp -lm -g
+	$(GCC) -std=c++17 -o  calc model/model.cpp main.cpp -lm -g
 	@./calc
 #	@rm calc
 
