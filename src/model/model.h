@@ -100,7 +100,7 @@ class CalcModel {
   bool SuitableTypesMatrix_[6][6] = {
       {0, 0, 1, 0, 0, 1},  // kNumber ./
       {1, 0, 0, 1, 1, 0},  // kUnaryOperator ./
-      {1, 0, 0, 1, 1, 0},  // kBinaryOperator ./
+      {1, 1, 0, 1, 1, 0},  // kBinaryOperator ./
       {0, 0, 0, 0, 1, 0},  // kUnaryFunction ./
       {1, 1, 0, 1, 1, 0},  // kOpenBracket ./
       {0, 0, 1, 0, 0, 1},  // kCloseBracket ./

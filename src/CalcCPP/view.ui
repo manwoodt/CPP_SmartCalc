@@ -1147,8 +1147,9 @@ border-top-right-radius: 30px;
 border-top-left-radius: 30px;
 border-bottom-right-radius: 30px;
 border-bottom-left-radius: 30px;
-background: rgb(185, 255, 104)
+background: transparent;
 }
+//rgb(185, 255, 104)
 
 </string>
     </property>
@@ -1485,8 +1486,10 @@ border-top-right-radius: 30px;
 border-top-left-radius: 30px;
 border-bottom-right-radius: 30px;
 border-bottom-left-radius: 30px;
-background: rgb(185, 255, 104);
+background: transparent;
+
 }
+//rgb(185, 255, 104);
 
 </string>
     </property>
