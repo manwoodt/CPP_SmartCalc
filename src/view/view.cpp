@@ -1,9 +1,10 @@
 #include "view.h"
 
-//s21::View::View(QWidget *parent) : QMainWindow(parent)
+// s21::View::View(QWidget *parent) : QMainWindow(parent)
 
-s21::View::View(s21::Controller *controller, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),controller_(controller) {
-   // this->controller_ = controller;
+s21::View::View(s21::Controller *controller, QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), controller_(controller) {
+  // this->controller_ = controller;
   ui->setupUi(this);
 
   // QDoubleValidator double_validator;
@@ -64,72 +65,74 @@ s21::View::View(s21::Controller *controller, QWidget *parent) : QMainWindow(pare
 
 s21::View::~View() { delete ui; }
 
-std::string s21::View::GetInputString(){
-return ui->InputString->text().toStdString();
+std::string s21::View::GetInputString() {
+  return ui->InputString->text().toStdString();
 }
-
 
 void s21::View::digits_numbers() {
   QPushButton *button = (QPushButton *)sender();
   ui->InputString->setText(ui->InputString->text() + button->text());
 }
 
- void s21::View::math_func() {
-   QPushButton *button = (QPushButton *)sender();
-   ui->InputString->setText(ui->InputString->text() + button->text() + "(");
- }
-
- void s21::View::delete_all_text() {
-   ui->InputString->clear();
-   ui->insert_x->clear();
- }
-
- void s21::View::equal() {
-     QString expr = ui->InputString->text();
-          QString x_expr = ui->insert_x->text();
-     if (expr.contains("x") && x_expr.isEmpty()) {
-       QMessageBox::warning(this, "Внимание!", "Введите значение x в поле ввода");
-       return;
-     } else {
-         try{
-    controller_->CalculateValue(expr.toStdString(), x_expr.toStdString());
-    SetAnswer(controller_->GetAnswer());
-         } catch (const std::exception &e){
-             QMessageBox::critical(this, "Внимание!", e.what());
-         }
+void s21::View::math_func() {
+  QPushButton *button = (QPushButton *)sender();
+  ui->InputString->setText(ui->InputString->text() + button->text() + "(");
 }
 
+void s21::View::delete_all_text() {
+  ui->InputString->clear();
+  ui->insert_x->clear();
 }
- void s21::View::SetAnswer(double x){
-   ui->InputString->setText(QString::number(x,'g',16));
- }
 
+void s21::View::equal() {
+  QString expr = ui->InputString->text();
+  QString x_expr = ui->insert_x->text();
+  if (expr.contains("x") && x_expr.isEmpty()) {
+    QMessageBox::warning(this, "Внимание!", "Введите значение x в поле ввода");
+    return;
+  } else if (expr.isEmpty()) {
+    QMessageBox::warning(this, "Внимание!",
+                         "Введите математическое выражение в поле ввода");
+  }
 
- void s21::View::backspace() {
-   QString text = ui->InputString->text();
-   if (text == "error")
-     ui->InputString->setText("");
-   else if (!text.isEmpty()) {
-     QString lastChar = text.right(4);
-     if (lastChar == "asin" || lastChar == "acos" || lastChar == "atan" ||
-         lastChar == "sqrt") {
-       text = text.left(text.length() - 4);
-     } else {
-       lastChar = text.right(3);
-       if (lastChar == "sin" || lastChar == "cos" || lastChar == "tan" ||
-           lastChar == "log") {
-         text = text.left(text.length() - 3);
-       } else {
-         lastChar = text.right(2);
-         if (lastChar == "ln")
-           text = text.left(text.length() - 2);
-         else
-           text = text.left(text.length() - 1);
-       }
-     }
-     ui->InputString->setText(text);
-   }
- }
+  else {
+    try {
+      controller_->CalculateValue(expr.toStdString(), x_expr.toStdString());
+      SetAnswer(controller_->GetAnswer());
+    } catch (const std::exception &e) {
+      QMessageBox::critical(this, "Внимание!", e.what());
+    }
+  }
+}
+void s21::View::SetAnswer(double x) {
+  ui->InputString->setText(QString::number(x, 'g', 16));
+}
+
+void s21::View::backspace() {
+  QString text = ui->InputString->text();
+  if (text == "error")
+    ui->InputString->setText("");
+  else if (!text.isEmpty()) {
+    QString lastChar = text.right(4);
+    if (lastChar == "asin" || lastChar == "acos" || lastChar == "atan" ||
+        lastChar == "sqrt") {
+      text = text.left(text.length() - 4);
+    } else {
+      lastChar = text.right(3);
+      if (lastChar == "sin" || lastChar == "cos" || lastChar == "tan" ||
+          lastChar == "log") {
+        text = text.left(text.length() - 3);
+      } else {
+        lastChar = text.right(2);
+        if (lastChar == "ln")
+          text = text.left(text.length() - 2);
+        else
+          text = text.left(text.length() - 1);
+      }
+    }
+    ui->InputString->setText(text);
+  }
+}
 
 // void MainWindow::credit_window() {
 //   credit_Window->show();
@@ -141,30 +144,30 @@ void s21::View::digits_numbers() {
 //   this->close();
 // }
 
- void s21::View::draw_graph() {
+void s21::View::draw_graph() {
   XYGraph result;
 
-   ui->Graph->clearGraphs();
-   double x_min = ui->doubleSpinBox_x_min->text().toDouble();
-   double x_max = ui->doubleSpinBox_x_max->text().toDouble();
-   double y_min = ui->doubleSpinBox_y_min->text().toDouble();
-   double y_max = ui->doubleSpinBox_y_max->text().toDouble();
-   double step = ui->doubleSpinBox_step->text().toDouble();
- //  int num = ui->spinBox_number_of_points->text().toInt();
-   QString expr = ui->InputString->text();
-   ui->Graph->xAxis->setRange(x_min, x_max);
-   ui->Graph->yAxis->setRange(y_min, y_max);
-  result = controller_->CalculateGraph(expr.toStdString(),step,x_min,x_max);
+  ui->Graph->clearGraphs();
+  double x_min = ui->doubleSpinBox_x_min->text().toDouble();
+  double x_max = ui->doubleSpinBox_x_max->text().toDouble();
+  double y_min = ui->doubleSpinBox_y_min->text().toDouble();
+  double y_max = ui->doubleSpinBox_y_max->text().toDouble();
+  double step = ui->doubleSpinBox_step->text().toDouble();
+  //  int num = ui->spinBox_number_of_points->text().toInt();
+  QString expr = ui->InputString->text();
+  ui->Graph->xAxis->setRange(x_min, x_max);
+  ui->Graph->yAxis->setRange(y_min, y_max);
+  result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max);
   QVector<double> vec_x(result.first.begin(), result.first.end());
   QVector<double> vec_y(result.second.begin(), result.second.end());
 
-        ui->Graph->addGraph();
-        ui->Graph->graph(0)->addData(vec_x, vec_y);
-        ui->Graph->replot();
-        vec_x.clear();
-        vec_y.clear();
+  ui->Graph->addGraph();
+  ui->Graph->graph(0)->addData(vec_x, vec_y);
+  ui->Graph->replot();
+  vec_x.clear();
+  vec_y.clear();
   // ui->Graph->graph(0)->setData(vec_x, vec_y);
- }
+}
 
 //   ui->widget->clearGraphs();
 //   double x_min = ui->doubleSpinBox_x_min->text().toDouble();

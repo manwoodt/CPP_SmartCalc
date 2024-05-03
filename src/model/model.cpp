@@ -1,7 +1,13 @@
 #include "model.h"
 
 using namespace s21;
-
+/* Сделать
+- новый парсер
+- депозит
+- кредит
+- унарный +
+- нормальный MVC
+*/
 CalcModel::CalcModel() { CreateTokenMap(); }
 
 double CalcModel::GetAnswer() const { return answer_; }
