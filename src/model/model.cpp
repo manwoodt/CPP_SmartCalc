@@ -113,7 +113,6 @@ void CalcModel::Parser(const std::string input_str) {
   MakeUnary();
 }
 
-// может быть оптимизирую на if, чтобы пропускать лишние символы
 void CalcModel::MakeUnary() {
   Token unary_minus{"negate", kDefault, kNone, kUnaryOperator,
                     std::negate<double>()};
@@ -133,18 +132,18 @@ void CalcModel::MakeUnary() {
   while (!temp_queue.empty()) {
     Token current_token = temp_queue.front();
     temp_queue.pop();
-
+    bool is_plus = (current_token.name_ == "+");
     bool is_minus = (current_token.name_ == "-");
     bool is_unary =
         (tokens_.empty() || (tokens_.back().type_ != kNumber &&
                              tokens_.back().type_ != kCloseBracket));
 
-    if (is_minus && is_unary) {
-      // Добавляем унарный минус перед соответствующими элементами
+    if (is_minus && is_unary)
       tokens_.push(unary_minus);
-    } else {
+    else if (is_plus && is_unary)
+      continue;
+    else
       tokens_.push(current_token);
-    }
   }
 }
 
