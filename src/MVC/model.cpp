@@ -75,42 +75,138 @@ void CalcModel::CheckX(const std::string input_x) {
 }
 
 void CalcModel::Parser(const std::string input_str) {
-  // поменять регулярку
-  std::regex token_regex(
-      "[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/"
-      "|\\^|mod|cos|sin|tan|acos|asin|atan|sqrt|ln|log|exp|abs|round|e|pi|inf");
   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
 
-  std::sregex_iterator iterator(input_str.begin(), input_str.end(),
-                                token_regex);
-  std::sregex_iterator end;
+  for (size_t i = 0; i < input_str.length();) {
+    char current_letter = input_str[i];
 
-  while (iterator != end) {
-    std::smatch match = *iterator;
-    std::string token = match.str();
-
-    bool is_number = std::regex_match(token, number_regex);
-    if (is_number) {
-      // Если токен - число, обрабатываем его соответственно
-      std::cout << "Number found: " << token << std::endl;
-      // // Дополнительные действия с числом
-      Token number{token, kDefault, kNone, kNumber, std::stod(token)};
-      tokens_.push(number);
-    } else {
-      // Если токен не число, ищем его в карте token_map
-      auto it = token_map_.find(token);
+    if (isalpha(current_letter))
+      AddTokenWord(input_str, i);
+    else if (isdigit(current_letter))
+      AddTokenNumber(input_str, i);
+    else {
+      std::string current_letter_str(1, current_letter);
+      auto it = token_map_.find(current_letter_str);
       if (it != token_map_.end()) {
-        std::cout << "Token found: " << token << std::endl;
+        std::cout << "Token found: " << current_letter << std::endl;
         // // Дополнительные действия с найденным токеном
         tokens_.push(it->second);
       } else
-        throw std::logic_error("Wrong Token " + token);
+        throw std::logic_error("Wrong Token " + current_letter);
+      i++;
     }
-
-    ++iterator;
   }
-  MakeUnary();
 }
+
+void CalcModel::AddTokenWord(const std::string& input_str, size_t& index) {
+  std::regex word_regex("(a-z)+");
+  std::sregex_iterator iterator = std::sregex_iterator(
+      input_str.begin() + index, input_str.end(), word_regex);
+
+  std::smatch match = *iterator;
+  // index += match.length();
+  std::string token = match.str();
+
+  auto it = token_map_.find(token);
+  if (it != token_map_.end()) {
+    std::cout << "Token found: " << token << std::endl;
+    // // Дополнительные действия с найденным токеном
+    tokens_.push(it->second);
+  } else
+    throw std::logic_error("Wrong Token " + token);
+}
+
+void CalcModel::AddTokenNumber(const std::string input_str, size_t& index) {
+  std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
+  std::sregex_iterator iterator(input_str.begin() + index, input_str.end(),
+                                number_regex);
+  std::smatch match = *iterator;
+  std::string token = match.str();
+  index += match.length();
+  // Если токен - число, обрабатываем его соответственно
+  std::cout << "Number found: " << token << std::endl;
+  // // Дополнительные действия с числом
+  Token number{token, kDefault, kNone, kNumber, std::stod(token)};
+  tokens_.push(number);
+}
+
+// void CalcModel::Parser(const std::string input_str) {
+//   // поменять регулярку
+//   std::regex token_regex(
+//       // добавить R
+//       "[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/"
+//       "|\\^|(a-z)+");
+//   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
+//   std::sregex_iterator iterator(input_str.begin(), input_str.end(),
+//                                 token_regex);
+//   std::sregex_iterator end;
+
+//   while (iterator != end) {
+//     std::smatch match = *iterator;
+//     std::string token = match.str();
+
+//     bool is_number = std::regex_match(token, number_regex);
+//     if (is_number) {
+//       // Если токен - число, обрабатываем его соответственно
+//       std::cout << "Number found: " << token << std::endl;
+//       // // Дополнительные действия с числом
+//       Token number{token, kDefault, kNone, kNumber, std::stod(token)};
+//       tokens_.push(number);
+//     } else {
+//       // Если токен не число, ищем его в карте token_map
+//       auto it = token_map_.find(token);
+//       if (it != token_map_.end()) {
+//         std::cout << "Token found: " << token << std::endl;
+//         // // Дополнительные действия с найденным токеном
+//         tokens_.push(it->second);
+//       } else
+//         throw std::logic_error("Wrong Token " + token);
+//     }
+
+//     ++iterator;
+//   }
+//   MakeUnary();
+// }
+
+// новый
+
+// void CalcModel::Parser(const std::string input_str) {
+//   // поменять регулярку
+//   std::regex token_regex(
+//       // добавить R
+//       "[\\d\\.]+(?:[eE][-+]?[\\d]+)?|(a-z)+|x|\\(|\\)|\\+|-|\\*|/"
+//       "|\\^");
+//   // подумать насчет минусы   std::regex
+//   // number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
+//   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
+
+//   for (size_t i = 0; i < input_str.length();) {
+//     std::sregex_iterator iterator(input_str.begin() + i, input_str.end(),
+//                                   token_regex);
+//     std::smatch match = *iterator;
+//     std::string token = match.str();
+//     bool is_number = std::regex_match(token, number_regex);
+//     if (is_number) {
+//       // Если токен - число, обрабатываем его соответственно
+//       std::cout << "Number found: " << token << std::endl;
+//       // // Дополнительные действия с числом
+//       Token number{token, kDefault, kNone, kNumber, std::stod(token)};
+//       tokens_.push(number);
+//       i += token.size();
+//     } else {
+//       // Если токен не число, ищем его в карте token_map
+//       auto it = token_map_.find(token);
+//       if (it != token_map_.end()) {
+//         std::cout << "Token found: " << token << std::endl;
+//         // // Дополнительные действия с найденным токеном
+//         tokens_.push(it->second);
+//       } else
+//         throw std::logic_error("Wrong Token " + token);
+//       i += token.size();
+//     }
+//   }
+//   MakeUnary();
+// }
 
 void CalcModel::MakeUnary() {
   Token unary_minus{"negate", kDefault, kNone, kUnaryOperator,

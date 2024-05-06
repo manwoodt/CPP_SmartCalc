@@ -73,6 +73,8 @@ class CalcModel {
 
  private:
   void Parser(const std::string input_str);
+  void AddTokenWord(const std::string& input_str, size_t& index);
+  void AddTokenNumber(const std::string input_str, size_t& index);
   void CheckX(const std::string input_x);
   void CreateTokenMap();
   void MakeUnary();
@@ -82,7 +84,7 @@ class CalcModel {
   std::queue<Token> tokens_;
   std::queue<Token> postfix_queue_;
   std::stack<Token> stack;
-  std::string input_exp_;
+  //  std::string input_exp_;
   std::vector<double> result_;
   std::map<std::string, Token> token_map_;
 

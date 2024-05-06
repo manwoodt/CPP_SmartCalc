@@ -1,4 +1,4 @@
-#include "model/model.h"
+#include "headers/model.h"
 using namespace s21;
 
 void printVector(const std::vector<double>& vec) {
@@ -10,9 +10,9 @@ void printVector(const std::vector<double>& vec) {
 
 int main() {
   CalcModel calc;
-  // calc.CalculateAnswer("2^2.3^0.5^3.456", "");
-  calc.CalculateGraph("x-5", 0.5, 1, 3);
-  printVector(calc.GetGraph().first);
-  printVector(calc.GetGraph().second);
-  std::cout << "calc.GetGraph().first.;";
+  calc.CalculateAnswer("cos(0)", "");
+  // calc.CalculateGraph("x-5", 0.5, 1, 3);
+  // printVector(calc.GetGraph().first);
+  // printVector(calc.GetGraph().second);
+  std::cout << "calc.GetAnswer().first.;";
 }
