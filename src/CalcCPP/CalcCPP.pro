@@ -9,18 +9,25 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../MVC/controller.cpp \
+    ../MVC/model.cpp \
+    ../MVC/view.cpp \
+    credit/credit_calc.cpp \
+    deposit/deposit_calc.cpp \
     main.cpp \
-../model/model.cpp \
-  ../view/view.cpp \
-    ../controller/controller.cpp \
-    qcustomplot.cpp
+    qcustomplot/qcustomplot.cpp
+
 HEADERS += \
-../model/model.h \
-  ../view/view.h \
-  ../controller/controller.h \
-    qcustomplot.h \
-    view.h
+    ../headers/controller.h \
+    ../headers/credit_calc.h \
+    ../headers/deposit_calc.h \
+    ../headers/model.h \
+    ../headers/qcustomplot.h \
+    ../headers/view.h \
+
 FORMS += \
+    credit/credit_calc.ui \
+    deposit/deposit_calc.ui \
     view.ui
 
 # Default rules for deployment.

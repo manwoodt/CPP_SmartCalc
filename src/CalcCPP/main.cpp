@@ -1,8 +1,8 @@
 #include <QApplication>
 
-#include "../controller/controller.h"
-#include "../model/model.h"
-#include "../view/view.h"
+#include "../headers/controller.h"
+#include "../headers/model.h"
+#include "../headers/view.h"
 // #include <QLocale>
 // #include <QTranslator>
 

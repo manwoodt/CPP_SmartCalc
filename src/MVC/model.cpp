@@ -1,11 +1,10 @@
-#include "model.h"
+#include "../headers/model.h"
 
 using namespace s21;
 /* Сделать
 - новый парсер
 - депозит
 - кредит
-- унарный +
 - нормальный MVC
 */
 CalcModel::CalcModel() { CreateTokenMap(); }

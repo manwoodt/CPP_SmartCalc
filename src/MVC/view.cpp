@@ -1,4 +1,4 @@
-#include "view.h"
+#include "../headers/view.h"
 
 // s21::View::View(QWidget *parent) : QMainWindow(parent)
 
@@ -10,11 +10,10 @@ s21::View::View(s21::Controller *controller, QWidget *parent)
   // QDoubleValidator double_validator;
   // ui->insert_x->setValidator(&double_validator);
 
-  //  credit_Window = new Credit_calc();
-  //  connect(credit_Window, &Credit_calc::firstWindow, this,
-  //  &MainWindow::show); deposit_Window = new Deposit_calc();
-  //  connect(deposit_Window, &Deposit_calc::firstWindow, this,
-  //  &MainWindow::show);
+  credit_Window = new Credit_calc();
+  connect(credit_Window, &Credit_calc::firstWindow, this, &View::show);
+  deposit_Window = new Deposit_calc();
+  connect(deposit_Window, &Deposit_calc::firstWindow, this, &View::show);
 
   connect(ui->pushButton_0, SIGNAL(clicked()), this, SLOT(digits_numbers()));
   connect(ui->pushButton_1, SIGNAL(clicked()), this, SLOT(digits_numbers()));
@@ -134,15 +133,15 @@ void s21::View::backspace() {
   }
 }
 
-// void MainWindow::credit_window() {
-//   credit_Window->show();
-//   this->close();
-// }
+void s21::View::credit_window() {
+  credit_Window->show();
+  this->close();
+}
 
-// void MainWindow::deposit_window() {
-//   deposit_Window->show();
-//   this->close();
-// }
+void s21::View::deposit_window() {
+  deposit_Window->show();
+  this->close();
+}
 
 void s21::View::draw_graph() {
   XYGraph result;
@@ -155,6 +154,10 @@ void s21::View::draw_graph() {
   double step = ui->doubleSpinBox_step->text().toDouble();
   //  int num = ui->spinBox_number_of_points->text().toInt();
   QString expr = ui->InputString->text();
+  if (expr.isEmpty())
+      QMessageBox::warning(this, "Внимание!",
+                           "Введите математическое выражение в поле ввода");
+else{
   ui->Graph->xAxis->setRange(x_min, x_max);
   ui->Graph->yAxis->setRange(y_min, y_max);
   result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max);
@@ -166,6 +169,7 @@ void s21::View::draw_graph() {
   ui->Graph->replot();
   vec_x.clear();
   vec_y.clear();
+  }
   // ui->Graph->graph(0)->setData(vec_x, vec_y);
 }
 
