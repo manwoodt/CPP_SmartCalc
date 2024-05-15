@@ -77,7 +77,10 @@ class CalcModel {
   void AddTokenNumber(const std::string input_str, size_t& index);
   void CheckX(const std::string input_x);
   void CreateTokenMap();
-  void MakeUnary();
+  void MakeUnaryAndCheckBrackets();
+  void MakeUnary(std::queue<Token>& temp_queue);
+  void CountBrackets(std::queue<Token> temp_queue, int& l_bracket,
+                     int& r_bracket);
   void ConvertToPostfix();
   double PostfixNotationCalculation();
   void CalculateXY(double step, double x_start, double x_end);
@@ -100,8 +103,8 @@ class CalcModel {
   bool CheckFirstToken[6] = {1, 1, 0, 1, 1, 0};
   bool CheckLastToken[6] = {1, 0, 0, 0, 0, 1};
   bool SuitableTypesMatrix_[6][6] = {
-      {0, 0, 1, 0, 0, 1},  // kNumber ./
-      {1, 0, 0, 1, 1, 0},  // kUnaryOperator ./
+      {0, 1, 1, 0, 0, 1},  // kNumber ./
+      {1, 1, 0, 1, 1, 0},  // kUnaryOperator ./
       {1, 1, 0, 1, 1, 0},  // kBinaryOperator ./
       {0, 0, 0, 0, 1, 0},  // kUnaryFunction ./
       {1, 1, 0, 1, 1, 0},  // kOpenBracket ./

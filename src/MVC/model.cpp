@@ -98,7 +98,6 @@ void CalcModel::Parser(const std::string input_str) {
       i++;
     }
   }
-  MakeUnary();
 }
 
 void CalcModel::AddTokenWord(const std::string& input_str, size_t& index) {
@@ -211,10 +210,7 @@ void CalcModel::AddTokenNumber(const std::string input_str, size_t& index) {
 //   MakeUnary();
 // }
 
-void CalcModel::MakeUnary() {
-  Token unary_minus{"negate", kDefault, kNone, kUnaryOperator,
-                    std::negate<double>()};
-
+void CalcModel::MakeUnaryAndCheckBrackets() {
   // Создаем пустую очередь для обработки
   std::queue<Token> temp_queue;
 
@@ -227,22 +223,37 @@ void CalcModel::MakeUnary() {
 
   // Обрабатываем каждый элемент во временной очереди и добавляем их обратно в
   // tokens_
+  int l_brackets = 0, r_brackets = 0;
   while (!temp_queue.empty()) {
-    Token current_token = temp_queue.front();
-    temp_queue.pop();
-    bool is_plus = (current_token.name_ == "+");
-    bool is_minus = (current_token.name_ == "-");
-    bool is_unary =
-        (tokens_.empty() || (tokens_.back().type_ != kNumber &&
-                             tokens_.back().type_ != kCloseBracket));
-
-    if (is_minus && is_unary)
-      tokens_.push(unary_minus);
-    else if (is_plus && is_unary)
-      continue;
-    else
-      tokens_.push(current_token);
+    CountBrackets(temp_queue, l_brackets, r_brackets);
+    MakeUnary(temp_queue);
   }
+  if (l_brackets != r_brackets)
+    throw std::logic_error("You didn't close the bracket");
+}
+
+void CalcModel::MakeUnary(std::queue<Token>& temp_queue) {
+  Token unary_minus{"negate", kDefault, kNone, kUnaryOperator,
+                    std::negate<double>()};
+  Token current_token = temp_queue.front();
+  temp_queue.pop();
+
+  bool is_plus = (current_token.name_ == "+");
+  bool is_minus = (current_token.name_ == "-");
+  bool is_unary = (tokens_.empty() || (tokens_.back().type_ != kNumber &&
+                                       tokens_.back().type_ != kCloseBracket));
+
+  if (is_minus && is_unary)
+    tokens_.push(unary_minus);
+  else if (!(is_plus && is_unary))
+    tokens_.push(current_token);
+}
+
+void CalcModel::CountBrackets(std::queue<Token> temp_queue, int& l_bracket,
+                              int& r_bracket) {
+  Token current_token = temp_queue.front();
+  if (current_token.name_ == "(") l_bracket++;
+  if (current_token.name_ == ")") r_bracket++;
 }
 
 void CalcModel::CheckTokens() {
@@ -267,6 +278,7 @@ void CalcModel::CheckTokens() {
 }
 
 void CalcModel::ConvertToPostfix() {
+  MakeUnaryAndCheckBrackets();
   CheckTokens();
   while (!tokens_.empty()) {
     switch (tokens_.front().type_) {
