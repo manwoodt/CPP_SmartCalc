@@ -160,10 +160,15 @@ void s21::View::draw_graph() {
 else{
   ui->Graph->xAxis->setRange(x_min, x_max);
   ui->Graph->yAxis->setRange(y_min, y_max);
-  result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max);
+
+  try {
+      result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max);
+  } catch (const std::exception &e) {
+    QMessageBox::critical(this, "Внимание!", e.what());
+  }
+
   QVector<double> vec_x(result.first.begin(), result.first.end());
   QVector<double> vec_y(result.second.begin(), result.second.end());
-
   ui->Graph->addGraph();
   ui->Graph->graph(0)->addData(vec_x, vec_y);
   ui->Graph->replot();
