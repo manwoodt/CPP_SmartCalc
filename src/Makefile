@@ -1,13 +1,65 @@
 CC=g++ -std=c++17 
-GCC =$(CC) -Wall -Wextra  -g
+GCC =$(CC) -Wall -Wextra -Werror -g
 CHECKFLAGS=-lgtest
 GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
 OS = $(shell uname)
+BIN_FILE=CalcCPP
+
+ifeq ($(OS), Darwin)
+	# FLAGS += -D MACOS
+	OPEN:=open
+	QMAKE:=qmake
+else
+	LIBS += -lsubunit -lrt -lm -lpthread
+	OPEN:=xdg-open
+	QMAKE:=qmake6
+endif
 
 all: test clean
 
+dvi:
+	open ../README.md
+
 clean:
-	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css matrix_test report *.txt *.dSYM 
+	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM  ./build
+
+build: clean
+	@mkdir -p ./build
+	$(QMAKE) CalcCPP/CalcCPP.pro -o ./build/$(BIN_FILE)_makefile
+	cd ./build && make -f $(BIN_FILE)_makefile
+	rm -rf ./build/moc_* ./build/*.o ./build/*.h ./build/$(BIN_FILE)_makefile ./build/.qmake.stash
+
+install: build
+ifeq ($(OS), Darwin)
+	open ./build/$(BIN_FILE).app/
+else 
+	./build/$(BIN_FILE)
+endif
+
+uninstall:
+ifeq ($(OS), Darwin)
+	@rm -rf ./build/$(BIN_FILE).app ./build/$(BIN_FILE).tar.gz
+else
+	@rm -rf ./build/$(BIN_FILE) ./build/$(BIN_FILE).tar.gz
+endif
+
+dist: build
+ifeq ($(OS), Darwin)
+	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE).app
+else
+	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE)
+endif
+
+# install:
+# 	mkdir build
+# 	mkdir $(HOME)/Desktop/Calculator
+# 	cd build && cmake ../Calculator/CMakeLists.txt && make
+# 	cp -rf build/calculator.app $(HOME)/Desktop/Calculator/Calculator.app
+
+# uninstall:
+# 	rm -rf $(HOME)/Desktop/Calculator/
+# 	rm -rf build
+
 
 # s21_matrix.a:
 # 	$(GCC) -c s21_*.cc -o matrix.o
@@ -51,4 +103,7 @@ gcov_report: test
 	genhtml -o report/ test.info
 	open ./report/index.html
 	rm -rf test *.o *.a *gcda *gcno *info
+
+
+
 

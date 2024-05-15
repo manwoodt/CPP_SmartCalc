@@ -4,7 +4,7 @@
 #include <QMainWindow>
 // #include <QDoubleValidator>
 #include <QMessageBox>
-//#include "qcustomplot.h"
+#include "qcustomplot/qcustomplot.h"
 
 #include "controller.h"
 #include "credit_calc.h"

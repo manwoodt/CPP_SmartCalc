@@ -22,7 +22,7 @@ HEADERS += \
     ../headers/credit_calc.h \
     ../headers/deposit_calc.h \
     ../headers/model.h \
-    ../headers/qcustomplot.h \
+    qcustomplot/qcustomplot.h \
     ../headers/view.h \
 
 FORMS += \

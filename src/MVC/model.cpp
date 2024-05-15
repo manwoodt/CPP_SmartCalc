@@ -2,7 +2,6 @@
 
 using namespace s21;
 /* Сделать
-- новый парсер
 - депозит
 - кредит
 - нормальный MVC
@@ -94,7 +93,7 @@ void CalcModel::Parser(const std::string input_str) {
         // // Дополнительные действия с найденным токеном
         tokens_.push(it->second);
       } else
-        throw std::logic_error("Wrong Token " + current_letter);
+        throw std::logic_error("Wrong Token " + current_letter_str);
       i++;
     }
   }
