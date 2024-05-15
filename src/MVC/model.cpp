@@ -6,6 +6,8 @@ using namespace s21;
 - депозит
 - кредит
 - нормальный MVC
+- make
+- тесты
 */
 CalcModel::CalcModel() { CreateTokenMap(); }
 
@@ -96,15 +98,16 @@ void CalcModel::Parser(const std::string input_str) {
       i++;
     }
   }
+  MakeUnary();
 }
 
 void CalcModel::AddTokenWord(const std::string& input_str, size_t& index) {
-  std::regex word_regex("(a-z)+");
+  std::regex word_regex("([a-z])+");
   std::sregex_iterator iterator = std::sregex_iterator(
       input_str.begin() + index, input_str.end(), word_regex);
 
   std::smatch match = *iterator;
-  // index += match.length();
+  index += match.length();
   std::string token = match.str();
 
   auto it = token_map_.find(token);

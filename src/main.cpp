@@ -10,7 +10,7 @@ void printVector(const std::vector<double>& vec) {
 
 int main() {
   CalcModel calc;
-  calc.CalculateAnswer("cos(0)", "");
+  calc.CalculateAnswer("cos(0", "");
   // calc.CalculateGraph("x-5", 0.5, 1, 3);
   // printVector(calc.GetGraph().first);
   // printVector(calc.GetGraph().second);
