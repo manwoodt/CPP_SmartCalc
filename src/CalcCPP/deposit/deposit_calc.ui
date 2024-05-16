@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: rgb(87, 231, 146);</string>
+   <string notr="true">background: qlineargradient(spread:pad, x1:0.315044, y1:0.290136, x2:0.630542, y2:0.744318, stop:0 rgba(24, 150, 93, 219), stop:0.871921 rgba(184, 255, 104, 211));</string>
   </property>
   <widget class="QFrame" name="frame_4">
    <property name="geometry">
@@ -24,6 +24,9 @@
      <width>331</width>
      <height>131</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:rgb(186, 255, 108)</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -48,7 +51,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>
@@ -71,7 +74,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>
@@ -119,7 +122,8 @@ background: rgb(167, 255, 129);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: black;</string>
+     <string notr="true">color: black;
+background: rgb(69, 177, 98)</string>
     </property>
     <item>
      <property name="text">
@@ -149,7 +153,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>
@@ -188,7 +192,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>
@@ -219,6 +223,9 @@ background: rgb(167, 255, 129);</string>
      <width>331</width>
      <height>101</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: rgb(69, 177, 98)</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -275,7 +282,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background:rgb(186, 255, 108)</string>
     </property>
     <property name="text">
      <string/>
@@ -300,7 +307,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background:rgb(186, 255, 108)</string>
     </property>
     <property name="text">
      <string/>
@@ -342,7 +349,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background:rgb(186, 255, 108)</string>
     </property>
     <property name="text">
      <string/>
@@ -360,6 +367,9 @@ background: rgb(167, 255, 129);</string>
      <width>221</width>
      <height>91</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: rgb(69, 177, 98)</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -440,7 +450,8 @@ background: rgb(167, 255, 129);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: black;</string>
+      <string notr="true">color: black;
+background:rgb(186, 255, 108)</string>
      </property>
      <item>
       <property name="text">
@@ -464,6 +475,9 @@ background: rgb(167, 255, 129);</string>
      <height>91</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background: rgb(69, 177, 98)</string>
+   </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
@@ -481,10 +495,11 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
+background:rgb(186, 255, 108);
    border: 1px solid grey;
  background-color:  transparent;
 color: black;
-border-top-right-radius: 30px;
+border-top-right-radius: 40px;
 border-top-left-radius: 30px;
 border-bottom-right-radius: 30px;
 border-bottom-left-radius: 30px;
@@ -503,7 +518,7 @@ QPushButton:pressed {
       <x>20</x>
       <y>61</y>
       <width>71</width>
-      <height>20</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -569,7 +584,8 @@ QPushButton:pressed {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: black;</string>
+    <string notr="true">color: black;
+background: transparent;</string>
    </property>
    <property name="text">
     <string>Депозитный калькулятор</string>
@@ -583,6 +599,9 @@ QPushButton:pressed {
      <width>331</width>
      <height>71</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:rgb(186, 255, 108)</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -623,7 +642,7 @@ QPushButton:pressed {
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>
@@ -646,7 +665,7 @@ background: rgb(167, 255, 129);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: black;
-background: rgb(167, 255, 129);</string>
+background: rgb(69, 177, 98)</string>
     </property>
     <property name="text">
      <string/>

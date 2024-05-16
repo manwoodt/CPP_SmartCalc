@@ -23,37 +23,34 @@ dvi:
 clean:
 	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM  ./build
 
-build: clean
-	@mkdir -p ./build
-	$(QMAKE) CalcCPP/CalcCPP.pro -o ./build/$(BIN_FILE)_makefile
-	cd ./build && make -f $(BIN_FILE)_makefile
-	rm -rf ./build/moc_* ./build/*.o ./build/*.h ./build/$(BIN_FILE)_makefile ./build/.qmake.stash
-
-install: build
-ifeq ($(OS), Darwin)
-	open ./build/$(BIN_FILE).app/
-else 
-	./build/$(BIN_FILE)
-endif
+install:
+	mkdir -p build
+	mkdir $(HOME)/Desktop/Calculator
+	cd build && qmake ../CalcCPP/CalcCPP.pro  && make
+	cp -rf build/CalcCPP.app $(HOME)/Desktop/Calculator/CalcCPP.app
+    cd $(HOME)/Desktop/Calculator/CalcCPP.app/Contents/MacOS && ./CalcCPP
 
 uninstall:
-ifeq ($(OS), Darwin)
-	@rm -rf ./build/$(BIN_FILE).app ./build/$(BIN_FILE).tar.gz
-else
-	@rm -rf ./build/$(BIN_FILE) ./build/$(BIN_FILE).tar.gz
-endif
+	rm -rf $(HOME)/Desktop/Calculator/
+	rm -rf build
 
-dist: build
-ifeq ($(OS), Darwin)
-	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE).app
-else
-	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE)
-endif
+
+# dist: build
+# ifeq ($(OS), Darwin)
+# 	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE).app
+# else
+# 	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE)
+# endif
 
 # install:
 # 	mkdir build
 # 	mkdir $(HOME)/Desktop/Calculator
-# 	cd build && cmake ../Calculator/CMakeLists.txt && make
+# 	cd build && qmake ../CalcCPP/CalcCPP.pro  && make
+# 	cp -rf build/calculator.app $(HOME)/Desktop/Calculator/Calculator.app
+
+# install:
+# 	mkdir -p $(HOME)/Desktop/Calculator/build
+# 	cd $(HOME)/Desktop/Calculator/build && qmake../CalcCPP/CalcCPP.pro  && make
 # 	cp -rf build/calculator.app $(HOME)/Desktop/Calculator/Calculator.app
 
 # uninstall:
