@@ -1,14 +1,19 @@
-CC=g++ -std=c++17 
-GCC =$(CC) -Wall -Wextra -Werror -g
-CHECKFLAGS=-lgtest
+CC=g++ 
+CFLAGS= -Wall -Wextra -Werror -g -std=c++17 
+GCR=
+GCC =$(CC) $(CFLAGS)
+# CHECKFLAGS=-lgtest
 GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
 OS = $(shell uname)
 BIN_FILE=CalcCPP
 
 ifeq ($(OS), Darwin)
-	# FLAGS += -D MACOS
+    # FLAGS += -D MACOS
 	OPEN:=open
 	QMAKE:=qmake
+	CC=clang++
+	CFLAGS+=$(shell pkg-config --cflags gtest)
+	LIBS+=$(shell pkg-config --libs gtest)
 else
 	LIBS += -lsubunit -lrt -lm -lpthread
 	OPEN:=xdg-open
@@ -18,54 +23,30 @@ endif
 all: test clean
 
 dvi:
-	open ../README.md
+	open../README.md
 
 clean:
-	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM  ./build
+	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build
 
-install:
+install: uninstall
 	mkdir -p build
 	mkdir $(HOME)/Desktop/Calculator
-	cd build && qmake ../CalcCPP/CalcCPP.pro  && make
+	cd build && qmake6 ../CalcCPP/CalcCPP.pro && make
 	cp -rf build/CalcCPP.app $(HOME)/Desktop/Calculator/CalcCPP.app
-    cd $(HOME)/Desktop/Calculator/CalcCPP.app/Contents/MacOS && ./CalcCPP
+	cd $(HOME)/Desktop/Calculator/CalcCPP.app/Contents/MacOS &&./CalcCPP
 
 uninstall:
 	rm -rf $(HOME)/Desktop/Calculator/
 	rm -rf build
-
-
-# dist: build
-# ifeq ($(OS), Darwin)
-# 	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE).app
-# else
-# 	cd ./build && tar -czvf $(BIN_FILE).tar.gz $(BIN_FILE)
-# endif
-
-# install:
-# 	mkdir build
-# 	mkdir $(HOME)/Desktop/Calculator
-# 	cd build && qmake ../CalcCPP/CalcCPP.pro  && make
-# 	cp -rf build/calculator.app $(HOME)/Desktop/Calculator/Calculator.app
-
-# install:
-# 	mkdir -p $(HOME)/Desktop/Calculator/build
-# 	cd $(HOME)/Desktop/Calculator/build && qmake../CalcCPP/CalcCPP.pro  && make
-# 	cp -rf build/calculator.app $(HOME)/Desktop/Calculator/Calculator.app
-
-# uninstall:
-# 	rm -rf $(HOME)/Desktop/Calculator/
-# 	rm -rf build
-
 
 # s21_matrix.a:
 # 	$(GCC) -c s21_*.cc -o matrix.o
 # 	ar rcs matrix.a matrix.o
 
 test: 
-	$(GCC) $(GCOV) -c model.cpp
-	$(GCC) -c tests.cpp $(CHECKFLAGS)
-	$(GCC) $(GCOV) -o calc_test tests.o model.o $(CHECKFLAGS) -g
+	$(GCC) $(GCOV) -c MVC/model.cpp
+	$(GCC) -c tests.cpp 
+	$(GCC) $(GCOV) $(LIBS)  -o calc_test tests.o model.o -g
 	./calc_test
 #  make clean
 
@@ -96,11 +77,19 @@ else
 endif
 
 gcov_report: test
-	lcov  -t "test" -o test.info --no-external -c -d  .
-	genhtml -o report/ test.info
-	open ./report/index.html
-	rm -rf test *.o *.a *gcda *gcno *info
+	# lcov  -t "calc_test" -o calc_test.info --no-external -c -d  .
+	# genhtml -o report/ calc_test.info
+	# open ./report/index.html
+	# rm -rf calc_test *.o *.a *gcda *gcno *info
 
-
-
-
+	gcovr $(GCR) --decisions \
+	--html-details $(COV_REPORT)gcov_report.html \
+	--html-theme github.dark-blue
+	rm -rf *.info && rm -rf *.gcov
+	@if command -v xdg-open > /dev/null; then \
+        xdg-open $(COV_REPORT)gcov_report.html; \
+    elif command -v open > /dev/null; then \
+        open $(COV_REPORT)gcov_report.html; \
+    else \
+        echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
+    fi
