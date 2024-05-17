@@ -1,0 +1,102 @@
+# по умолчанию компилятор g++ для Linux, для мак потом выбирается clang++
+CXX=g++
+
+# переменная нужна для gcov-report. Для Linux оставить пустым. Для мак потом инициализируется другой строкой
+GCR=
+
+CFLAGS=-std=c++17 -g \
+		-Wall \
+		-Wextra \
+		--coverage
+# -Werror
+
+V_COMMAND=valgrind  --tool=memcheck --track-fds=yes --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all -s
+# L_COMMAND=leaks -atExit --
+
+OS:=$(shell uname -s)
+
+ifeq ($(OS), Darwin)
+	CXX=clang++
+	CFLAGS+=$(shell pkg-config --cflags gtest)
+	LIBS+=$(shell pkg-config --libs gtest)
+	GCR=--gcov-executable "llvm-cov gcov"
+endif
+
+
+PATH_TO_OBJ=objects/
+PATH_TO_TESTS=TESTS/
+PATH_TO_SUP=SUPPORT_FUNCTIONS/
+PATH_TO_MAIN=MAIN_FUNCTIONS/
+COV_REPORT=REPORT/
+LIB_NAME=s21_matrix_oop.a
+EXEC_T=unit_tests
+
+SRC=$(wildcard $(PATH_TO_SUP)*.cpp) $(shell find $(PATH_TO_MAIN) -name '*.cpp')
+OBJ=$(patsubst %.cpp, $(PATH_TO_OBJ)%.o, $(SRC))
+SRC_T=$(wildcard $(PATH_TO_TESTS)*.cpp)
+OBJ_T=$(patsubst %.cpp, $(PATH_TO_OBJ)%.o, $(SRC_T))
+
+
+$(PATH_TO_OBJ)%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@
+
+all: gcov_report
+
+s21_matrix_oop.a: $(OBJ)
+	@ar rc $@ $(OBJ)
+	@ranlib $@
+
+test: clean $(OBJ_T) $(LIB_NAME)
+ifeq ($(OS), Darwin)
+	$(CXX) $(CFLAGS) $(OBJ_T) $(LIB_NAME) $(LIBS) -o $(PATH_TO_TESTS)$(EXEC_T)
+else ifeq ($(OS), Linux)
+	$(CXX) $(CFLAGS) $(OBJ_T) $(LIB_NAME) -o $(PATH_TO_TESTS)$(EXEC_T) -lgtest -lsubunit -lrt -lpthread -lm
+endif
+	$(PATH_TO_TESTS)./$(EXEC_T) || true
+
+clean:
+	find $(PATH_TO_OBJ) -name '*.o' -exec rm {} +
+	find $(PATH_TO_OBJ) -name '*.gcno' -exec rm {} +
+	find $(PATH_TO_OBJ) -name '*.gcda' -exec rm {} +
+	rm -rf $(LIB_NAME) && rm -rf $(PATH_TO_TESTS)$(EXEC_T)
+	rm -rf $(COV_REPORT)*.css && rm -rf $(COV_REPORT)*.html
+	rm -rf *.info && rm -rf *.gcov
+	rm -rf RESULT_VALGRIND.txt gcov_*
+
+# gcov_report: clean s21_matrix_oop.a test
+# 	# rm -rf $(PATH_TO_OBJ)$(PATH_TO_TESTS)*.gcno
+# 	# rm -rf $(PATH_TO_OBJ)$(PATH_TO_TESTS)*.gcda
+# 	# lcov --directory . --capture --output-file coverage.info
+# 	# lcov --remove coverage.info '/usr/*' --output-file coverage.info
+# 	# lcov --list coverage.info
+# 	genhtml coverage.info --output-directory $(COV_REPORT)
+# 	@if command -v xdg-open > /dev/null; then \
+#         xdg-open $(COV_REPORT)/index.html; \
+#     elif command -v open > /dev/null; then \
+#         open $(COV_REPORT)/index.html; \
+#     else \
+#         echo "Cannot open browser. Please open '$(COV_REPORT)/index.html' manually."; \
+#     fi
+
+
+#pip install git+https://github.com/gcovr/gcovr.git
+
+
+gcov_report: clean s21_matrix_oop.a test
+	rm -rf $(PATH_TO_OBJ)$(PATH_TO_TESTS)*.gcno
+	rm -rf $(PATH_TO_OBJ)$(PATH_TO_TESTS)*.gcda
+	gcovr $(GCR) --decisions \
+	--html-details $(COV_REPORT)gcov_report.html \
+	--html-theme github.dark-blue
+	rm -rf *.info && rm -rf *.gcov
+	@if command -v xdg-open > /dev/null; then \
+        xdg-open $(COV_REPORT)gcov_report.html; \
+    elif command -v open > /dev/null; then \
+        open $(COV_REPORT)gcov_report.html; \
+    else \
+        echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
+    fi
+
+
+
+.PHONY:

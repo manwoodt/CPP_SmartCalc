@@ -11,7 +11,7 @@ ifeq ($(OS), Darwin)
     # FLAGS += -D MACOS
 	OPEN:=open
 	QMAKE:=qmake
-	CC=clang++
+	# CC=clang++
 	CFLAGS+=$(shell pkg-config --cflags gtest)
 	LIBS+=$(shell pkg-config --libs gtest)
 else
@@ -77,19 +77,19 @@ else
 endif
 
 gcov_report: test
-	# lcov  -t "calc_test" -o calc_test.info --no-external -c -d  .
-	# genhtml -o report/ calc_test.info
-	# open ./report/index.html
-	# rm -rf calc_test *.o *.a *gcda *gcno *info
+	lcov  -t "calc_test" -o calc_test.info --no-external -c -d  .
+	genhtml -o report/ calc_test.info
+	open ./report/index.html
+	rm -rf calc_test *.o *.a *gcda *gcno *info
 
-	gcovr $(GCR) --decisions \
-	--html-details $(COV_REPORT)gcov_report.html \
-	--html-theme github.dark-blue
-	rm -rf *.info && rm -rf *.gcov
-	@if command -v xdg-open > /dev/null; then \
-        xdg-open $(COV_REPORT)gcov_report.html; \
-    elif command -v open > /dev/null; then \
-        open $(COV_REPORT)gcov_report.html; \
-    else \
-        echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
-    fi
+	# gcovr $(GCR) --decisions \
+	# --html-details $(COV_REPORT)gcov_report.html \
+	# --html-theme github.dark-blue
+	# rm -rf *.info && rm -rf *.gcov
+	# @if command -v xdg-open > /dev/null; then \
+    #     xdg-open $(COV_REPORT)gcov_report.html; \
+    # elif command -v open > /dev/null; then \
+    #     open $(COV_REPORT)gcov_report.html; \
+    # else \
+    #     echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
+    # fi
