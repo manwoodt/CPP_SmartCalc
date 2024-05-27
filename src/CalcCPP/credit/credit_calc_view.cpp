@@ -1,4 +1,4 @@
-#include "../../headers/credit_calc.h"
+#include "../../headers/credit_calc_view.h"
 
 #include "../../headers/view.h"
 #include "ui_credit_calc.h"
@@ -15,9 +15,7 @@ void Credit_calc::back() {
   emit firstWindow();
 }
 
-void Credit_calc::equal() {
-
-}
+void Credit_calc::equal() {}
 
 //  double loanAmount = ui->lineEdit_loanAmount->text().toDouble();
 //  double term = ui->lineEdit_term->text().toDouble();

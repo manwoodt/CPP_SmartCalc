@@ -4,11 +4,11 @@
 #include <QMainWindow>
 // #include <QDoubleValidator>
 #include <QMessageBox>
-#include "qcustomplot/qcustomplot.h"
 
 #include "controller.h"
-#include "credit_calc.h"
+#include "credit_calc_view.h"
 #include "deposit_calc.h"
+#include "qcustomplot/qcustomplot.h"
 #include "ui_view.h"
 
 QT_BEGIN_NAMESPACE

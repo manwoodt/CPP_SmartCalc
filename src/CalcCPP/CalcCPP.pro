@@ -15,21 +15,21 @@ SOURCES += \
     ../MVC/controller.cpp \
     ../MVC/model.cpp \
     ../MVC/view.cpp \
-    credit/credit_calc.cpp \
+    credit/credit_calc_view.cpp \
     deposit/deposit_calc.cpp \
     main.cpp \
     qcustomplot/qcustomplot.cpp
 
 HEADERS += \
     ../headers/controller.h \
-    ../headers/credit_calc.h \
+    ../headers/credit_calc_view.h \
     ../headers/deposit_calc.h \
     ../headers/model.h \
     qcustomplot/qcustomplot.h \
     ../headers/view.h \
 
 FORMS += \
-    credit/credit_calc.ui \
+    credit/credit_calc_view.ui \
     deposit/deposit_calc.ui \
     view.ui
 
