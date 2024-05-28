@@ -12,6 +12,9 @@
 // дифференцированный) rate -%, loan - кредит, term - срок (в годах)
 // Выход: ежемесячный платеж, переплата по кредиту, общая выплата
 namespace s21 {
+
+CreditCalcModel::CreditCalcModel(){};
+
 void CreditCalcModel::SetData(const std::string& loanAmount,
                               const std::string& term, const bool isYear,
                               const std::string& interestRate, bool isAnnuity) {
