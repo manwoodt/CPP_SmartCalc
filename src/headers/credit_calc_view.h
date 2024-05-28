@@ -2,11 +2,7 @@
 #define CREDIT_CALC_H
 
 #include <QWidget>
-
-// extern "C"{
-// #include "../calc.h"
-// }
-
+#include <QMessageBox>
 namespace Ui {
 class Credit_calc;
 }
