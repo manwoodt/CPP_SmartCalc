@@ -33,9 +33,9 @@ void s21::Credit_calc::equal() {
     } else {
         try {
           std::vector<std::string> outputData = controller_->CalculateCredit(loanAmount,term,isYear,interestRate,isAnnuity);
-              ui->lineEdit_overpayment->setText(QString(outputData[2].c_str()));
               ui->lineEdit_monthlyPayment->setText(QString(outputData[0].c_str()));
               ui->lineEdit_overpayment->setText(QString(outputData[1].c_str()));
+              ui->lineEdit_overpayment->setText(QString(outputData[2].c_str()));
         } catch (const std::exception &e) {
           QMessageBox::critical(this, "Внимание!", e.what());
     }

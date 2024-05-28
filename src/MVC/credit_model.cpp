@@ -33,9 +33,9 @@ void CreditCalcModel::SetData(const std::string& loanAmount,
 
 std::vector<std::string> CreditCalcModel::СalculateAnswer() const noexcept {
   if (isAnnuity_)
-   return СalculateAnnuity();
+    return СalculateAnnuity();
   else
-   return СalculateDifferentiated();
+    return СalculateDifferentiated();
 }
 
 std::vector<std::string> CreditCalcModel::СalculateAnnuity() const noexcept {
@@ -45,6 +45,10 @@ std::vector<std::string> CreditCalcModel::СalculateAnnuity() const noexcept {
       (pow(1 + monthlyInterestRate_, term_) - 1);
   double totalPayment = monthlyPayment * term_;
   double overpayment = totalPayment - loanAmount_;
+  monthlyPayment = round(monthlyPayment * 100) / 100;
+  totalPayment = round(totalPayment * 100) / 100;
+  overpayment = round(overpayment * 100) / 100;
+  std::cout << monthlyPayment << '\n' << totalPayment << '\n' << overpayment;
   std::vector<std::string> returnValue(3);
   returnValue[0] = std::to_string(monthlyPayment);
   returnValue[1] = std::to_string(totalPayment);
@@ -54,13 +58,17 @@ std::vector<std::string> CreditCalcModel::СalculateAnnuity() const noexcept {
 
 std::vector<std::string> CreditCalcModel::СalculateDifferentiated()
     const noexcept {
-  double loanBalance=0, monthlyPayment=0, totalPayment=0, overpayment=0;
+  double loanBalance = 0, monthlyPayment = 0, totalPayment = 0, overpayment = 0;
   for (int i = 1; i <= term_; i++) {
     loanBalance = (loanAmount_ - ((loanAmount_ / term_) * (i - 1)));
     monthlyPayment = (loanAmount_ / term_) + loanBalance * monthlyInterestRate_;
     totalPayment += monthlyPayment;
     overpayment += monthlyPayment - loanAmount_ / term_;
   }
+  monthlyPayment = round(monthlyPayment * 100) / 100;
+  totalPayment = round(totalPayment * 100) / 100;
+  overpayment = round(overpayment * 100) / 100;
+
   std::vector<std::string> returnValue(3);
   returnValue[0] = std::to_string(monthlyPayment);
   returnValue[1] = std::to_string(totalPayment);
