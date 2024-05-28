@@ -3,9 +3,6 @@
 
 #include <QWidget>
 
-// extern "C"{
-// #include "../calc.h"
-// }
 
 namespace Ui {
 class Deposit_calc;

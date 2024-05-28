@@ -24,15 +24,15 @@ void CreditCalcModel::SetData(const std::string& loanAmount,
     std::cerr << "Ошибка преобразования строки в число: " << e.what() << '\n';
   }
   // if (loanAmount < 0.01 || term < 0.01 || interestRate < 0.01) return -1;
-  if (isYear) term_ * 12;
+  if (isYear) term_ *= 12;
   isAnnuity_ = isAnnuity;
 }
 
 std::vector<std::string> CreditCalcModel::СalculateAnswer() const noexcept {
   if (isAnnuity_)
-    СalculateAnnuity();
+   return СalculateAnnuity();
   else
-    СalculateDifferentiated();
+   return СalculateDifferentiated();
 }
 
 std::vector<std::string> CreditCalcModel::СalculateAnnuity() const noexcept {
@@ -51,7 +51,7 @@ std::vector<std::string> CreditCalcModel::СalculateAnnuity() const noexcept {
 
 std::vector<std::string> CreditCalcModel::СalculateDifferentiated()
     const noexcept {
-  double loanBalance, monthlyPayment, totalPayment, overpayment;
+  double loanBalance=0, monthlyPayment=0, totalPayment=0, overpayment=0;
   for (int i = 1; i <= term_; i++) {
     loanBalance = (loanAmount_ - ((loanAmount_ / term_) * (i - 1)));
     monthlyPayment = (loanAmount_ / term_) + loanBalance * monthlyInterestRate_;

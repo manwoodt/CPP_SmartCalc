@@ -2,7 +2,6 @@
 #define VIEW_H
 
 #include <QMainWindow>
-// #include <QDoubleValidator>
 #include <QMessageBox>
 
 #include "controller.h"

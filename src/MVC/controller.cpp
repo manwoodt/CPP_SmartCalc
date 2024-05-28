@@ -12,3 +12,9 @@ XYGraph s21::Controller::CalculateGraph(const std::string input_str,
 }
 
 double s21::Controller::GetAnswer() { return Calc_->GetAnswer(); }
+
+std::vector<std::string> s21::Controller::CalculateCredit(const std::string &loanAmount, const std::string &term,bool isYear, const std::string &interestRate, bool isAnnuity){
+    Credit_->SetData(loanAmount,term,isYear,interestRate, isAnnuity);
+    return Credit_->СalculateAnswer();
+}
+

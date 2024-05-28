@@ -13,6 +13,7 @@ TARGET = CalcCPP
 
 SOURCES += \
     ../MVC/controller.cpp \
+    ../MVC/credit_model.cpp \
     ../MVC/model.cpp \
     ../MVC/view.cpp \
     credit/credit_calc_view.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 HEADERS += \
     ../headers/controller.h \
     ../headers/credit_calc_view.h \
+    ../headers/credit_model.h \
     ../headers/deposit_calc.h \
     ../headers/model.h \
     qcustomplot/qcustomplot.h \
