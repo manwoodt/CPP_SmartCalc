@@ -7,8 +7,6 @@ s21::View::View(s21::Controller *controller, QWidget *parent)
 
   credit_Window = new Credit_calc(controller);
   connect(credit_Window, &Credit_calc::firstWindow, this, &View::show);
-  deposit_Window = new Deposit_calc();
-  connect(deposit_Window, &Deposit_calc::firstWindow, this, &View::show);
 
   connect(ui->pushButton_0, SIGNAL(clicked()), this, SLOT(digits_numbers()));
   connect(ui->pushButton_1, SIGNAL(clicked()), this, SLOT(digits_numbers()));
@@ -130,11 +128,6 @@ void s21::View::backspace() {
 
 void s21::View::credit_window() {
   credit_Window->show();
-  this->close();
-}
-
-void s21::View::deposit_window() {
-  deposit_Window->show();
   this->close();
 }
 

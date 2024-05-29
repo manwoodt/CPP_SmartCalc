@@ -6,7 +6,6 @@
 
 #include "controller.h"
 #include "credit_calc_view.h"
-#include "deposit_calc.h"
 #include "qcustomplot/qcustomplot.h"
 #include "ui_view.h"
 
@@ -29,7 +28,6 @@ class View : public QMainWindow {
   Ui::MainWindow *ui;
   s21::Controller *controller_;
   Credit_calc *credit_Window;
-  Deposit_calc *deposit_Window;
 
   std::string GetInputString();
   void SetAnswer(double x);
@@ -41,7 +39,6 @@ class View : public QMainWindow {
   void backspace();
   void equal();
   void credit_window();
-  void deposit_window();
   void draw_graph();
 };
 }  // namespace s21
