@@ -56,6 +56,7 @@
         "memory_resource": "cpp",
         "utility": "cpp",
         "iostream": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "map": "cpp"
     }
 }

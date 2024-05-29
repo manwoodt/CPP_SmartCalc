@@ -50,10 +50,9 @@ test:
 	./calc_test
 #  make clean
 
-#main.cpp 
 mytest:
 	@echo --------------------MYTEST-----------------------
-	$(GCC) -std=c++17 -o  calc MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp main.cpp -lm -g
+	$(GCC) -std=c++17 -o  calc MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp test_main.cpp -lm -g
 	@./calc
 #	@rm calc
 
@@ -63,9 +62,9 @@ cppcheck:
 
 clang:
 	@echo -------------------CLANG_FORMAT------------------------
-	@ cp ../../materials/linters/.clang-format .
-	#clang-format -n -style=Google *.cc *.h
-	clang-format -i -style=Google *.cc *.h
+	@ cp ../materials/linters/.clang-format .
+	clang-format -n -style=Google *.cpp *.h
+	clang-format -i -style=Google *.cpp *.h
 	@rm clang-format
 
 

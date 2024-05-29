@@ -1,80 +1,69 @@
 #include "../headers/view.h"
-
-
-s21::View::View(s21::Controller *controller, QWidget *parent)
+namespace s21 {
+View::View(Controller *controller, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), controller_(controller) {
   ui->setupUi(this);
 
   credit_Window = new Credit_calc(controller);
-  connect(credit_Window, &Credit_calc::firstWindow, this, &View::show);
-
-  connect(ui->pushButton_0, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_1, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-
-  connect(ui->pushButton_cos, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_sin, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_tan, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_acos, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_asin, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_atan, SIGNAL(clicked()), this, SLOT(math_func()));
-
-  connect(ui->pushButton_x, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_leftBracket, SIGNAL(clicked()), this,
-          SLOT(digits_numbers()));
-  connect(ui->pushButton_rightBracket, SIGNAL(clicked()), this,
-          SLOT(digits_numbers()));
-  connect(ui->pushButton_minus, SIGNAL(clicked()), this,
-          SLOT(digits_numbers()));
-  connect(ui->pushButton_plus, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_mul, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_div, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_deg, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-  connect(ui->pushButton_mod, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-
-  connect(ui->pushButton_log, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_ln, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_sqrt, SIGNAL(clicked()), this, SLOT(math_func()));
-  connect(ui->pushButton_dot, SIGNAL(clicked()), this, SLOT(digits_numbers()));
-
-  connect(ui->pushButton_C, SIGNAL(clicked()), this, SLOT(delete_all_text()));
-  connect(ui->pushButton_del, SIGNAL(clicked()), this, SLOT(backspace()));
-
-  connect(ui->pushButton_equal, SIGNAL(clicked()), this, SLOT(equal()));
-  connect(ui->pushButton_graph, SIGNAL(clicked()), this, SLOT(draw_graph()));
-  connect(ui->pushButton_credit, SIGNAL(clicked()), this,
-          SLOT(credit_window()));
+  SetSignals();
 }
 
-s21::View::~View() { delete ui; }
+View::~View() { delete ui; }
 
-std::string s21::View::GetInputString() {
+void View::SetSignals(){
+    connect(credit_Window, &Credit_calc::firstWindow, this, &View::show);
+
+    connect(ui->pushButton_0, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_1, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+
+    connect(ui->pushButton_cos, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_sin, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_tan, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_acos, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_asin, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_atan, SIGNAL(clicked()), this, SLOT(math_func()));
+
+    connect(ui->pushButton_x, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_leftBracket, SIGNAL(clicked()), this,
+            SLOT(digits_numbers()));
+    connect(ui->pushButton_rightBracket, SIGNAL(clicked()), this,
+            SLOT(digits_numbers()));
+    connect(ui->pushButton_minus, SIGNAL(clicked()), this,
+            SLOT(digits_numbers()));
+    connect(ui->pushButton_plus, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_mul, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_div, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_deg, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+    connect(ui->pushButton_mod, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+
+    connect(ui->pushButton_log, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_ln, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_sqrt, SIGNAL(clicked()), this, SLOT(math_func()));
+    connect(ui->pushButton_dot, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+
+    connect(ui->pushButton_C, SIGNAL(clicked()), this, SLOT(delete_all_text()));
+    connect(ui->pushButton_del, SIGNAL(clicked()), this, SLOT(backspace()));
+
+    connect(ui->pushButton_equal, SIGNAL(clicked()), this, SLOT(equal()));
+    connect(ui->pushButton_graph, SIGNAL(clicked()), this, SLOT(draw_graph()));
+    connect(ui->pushButton_credit, SIGNAL(clicked()), this,
+            SLOT(credit_window()));
+}
+
+
+std::string View::GetInputString() {
   return ui->InputString->text().toStdString();
 }
 
-void s21::View::digits_numbers() {
-  QPushButton *button = (QPushButton *)sender();
-  ui->InputString->setText(ui->InputString->text() + button->text());
-}
-
-void s21::View::math_func() {
-  QPushButton *button = (QPushButton *)sender();
-  ui->InputString->setText(ui->InputString->text() + button->text() + "(");
-}
-
-void s21::View::delete_all_text() {
-  ui->InputString->clear();
-  ui->insert_x->clear();
-}
-
-void s21::View::equal() {
+void View::equal() {
   QString expr = ui->InputString->text();
   QString x_expr = ui->insert_x->text();
   if (expr.contains("x") && x_expr.isEmpty()) {
@@ -94,15 +83,31 @@ void s21::View::equal() {
     }
   }
 }
-void s21::View::SetAnswer(double x) {
+
+void View::digits_numbers() {
+  QPushButton *button = (QPushButton *)sender();
+  ui->InputString->setText(ui->InputString->text() + button->text());
+}
+
+void View::math_func() {
+  QPushButton *button = (QPushButton *)sender();
+  ui->InputString->setText(ui->InputString->text() + button->text() + "(");
+}
+
+void View::delete_all_text() {
+  ui->InputString->clear();
+  ui->insert_x->clear();
+}
+
+
+
+void View::SetAnswer(double x) {
   ui->InputString->setText(QString::number(x, 'g', 16));
 }
 
-void s21::View::backspace() {
+void View::backspace() {
   QString text = ui->InputString->text();
-  if (text == "error")
-    ui->InputString->setText("");
-  else if (!text.isEmpty()) {
+if (!text.isEmpty()) {
     QString lastChar = text.right(4);
     if (lastChar == "asin" || lastChar == "acos" || lastChar == "atan" ||
         lastChar == "sqrt") {
@@ -124,12 +129,7 @@ void s21::View::backspace() {
   }
 }
 
-void s21::View::credit_window() {
-  credit_Window->show();
-  this->close();
-}
-
-void s21::View::draw_graph() {
+void View::draw_graph() {
   XYGraph result;
 
   ui->Graph->clearGraphs();
@@ -141,25 +141,31 @@ void s21::View::draw_graph() {
   //  int num = ui->spinBox_number_of_points->text().toInt();
   QString expr = ui->InputString->text();
   if (expr.isEmpty())
-      QMessageBox::warning(this, "Внимание!",
-                           "Введите математическое выражение в поле ввода");
-else{
-  ui->Graph->xAxis->setRange(x_min, x_max);
-  ui->Graph->yAxis->setRange(y_min, y_max);
+    QMessageBox::warning(this, "Внимание!",
+                         "Введите математическое выражение в поле ввода");
+  else {
+    ui->Graph->xAxis->setRange(x_min, x_max);
+    ui->Graph->yAxis->setRange(y_min, y_max);
 
-  try {
-      result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max,y_min,y_max);
-  } catch (const std::exception &e) {
-    QMessageBox::critical(this, "Внимание!", e.what());
-  }
+    try {
+      result = controller_->CalculateGraph(expr.toStdString(), step, x_min,
+                                           x_max, y_min, y_max);
+    } catch (const std::exception &e) {
+      QMessageBox::critical(this, "Внимание!", e.what());
+    }
 
-  QVector<double> vec_x(result.first.begin(), result.first.end());
-  QVector<double> vec_y(result.second.begin(), result.second.end());
-  ui->Graph->addGraph();
-  ui->Graph->graph(0)->addData(vec_x, vec_y);
-  ui->Graph->replot();
-  vec_x.clear();
-  vec_y.clear();
+    QVector<double> vec_x(result.first.begin(), result.first.end());
+    QVector<double> vec_y(result.second.begin(), result.second.end());
+    ui->Graph->addGraph();
+    ui->Graph->graph(0)->addData(vec_x, vec_y);
+    ui->Graph->replot();
+    vec_x.clear();
+    vec_y.clear();
   }
-  // ui->Graph->graph(0)->setData(vec_x, vec_y);
 }
+
+void View::credit_window() {
+  credit_Window->show();
+  this->close();
+}
+} // namespace s21

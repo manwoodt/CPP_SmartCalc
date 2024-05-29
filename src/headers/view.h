@@ -20,19 +20,19 @@ class View : public QMainWindow {
   Q_OBJECT
 
  public:
-  // View(QWidget *parent = nullptr);
-  View(s21::Controller *c, QWidget *parent = nullptr);
+  View(Controller *c, QWidget *parent = nullptr);
   ~View();
 
  private:
   Ui::MainWindow *ui;
-  s21::Controller *controller_;
+  Controller *controller_;
   Credit_calc *credit_Window;
 
   std::string GetInputString();
   void SetAnswer(double x);
 
  private slots:
+  void SetSignals();
   void digits_numbers();
   void math_func();
   void delete_all_text();

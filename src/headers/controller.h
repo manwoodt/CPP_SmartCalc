@@ -14,16 +14,15 @@ class Controller {
   Controller(CalcModel *Calc, CreditCalcModel *Credit)
       : Calc_(Calc), Credit_(Credit){};
 
-  // ~Controller();
-
-  void CalculateValue(std::string input_str, std::string x);
-  XYGraph CalculateGraph(const std::string input_str, double step,
-                         double x_min, double x_max,double y_min, double y_max);
-  std::vector<double> CalculateCredit(const std::string &loanAmount,
-                                      const std::string &term, bool isYear,
-                                      const std::string &interestRate,
+  void CalculateValue(const std::string &input_str, const std::string x);
+  XYGraph CalculateGraph(const std::string &input_str, const double step,
+                         const double x_min, const double x_max,
+                         const double y_min, const double y_max);
+  std::vector<double> CalculateCredit(const std::string loanAmount,
+                                      const std::string term, bool isYear,
+                                      const std::string interestRate,
                                       bool isAnnuity);
-  double GetAnswer();
+  double GetAnswer() const;
 
  private:
   CalcModel *Calc_;

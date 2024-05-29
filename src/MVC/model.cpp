@@ -1,20 +1,14 @@
 #include "../headers/model.h"
 
 using namespace s21;
-/* Сделать
-- депозит
-- кредит
-- нормальный MVC
-- make
-- тесты
-*/
+
 CalcModel::CalcModel() { CreateTokenMap(); }
 
 double CalcModel::GetAnswer() const { return answer_; }
 
 XYGraph CalcModel::GetGraph() const { return answer_graph_; }
 
-void CalcModel::CalculateAnswer(const std::string input_str,
+void CalcModel::CalculateAnswer(const std::string& input_str,
                                 const std::string input_x) {
   ClearTokens();
   CheckX(input_x);
@@ -23,9 +17,9 @@ void CalcModel::CalculateAnswer(const std::string input_str,
   answer_ = PostfixNotationCalculation();
 }
 
-void CalcModel::CalculateGraph(const std::string input_str, double step,
-                               double x_start, double x_end, double y_min,
-                               double y_max) {
+void CalcModel::CalculateGraph(const std::string& input_str, const double step,
+                               const double x_start, const double x_end,
+                               const double y_min, const double y_max) {
   ClearTokens();
   Parser(input_str);
   ConvertToPostfix();
@@ -76,7 +70,7 @@ void CalcModel::CheckX(const std::string input_x) {
   }
 }
 
-void CalcModel::Parser(const std::string input_str) {
+void CalcModel::Parser(const std::string& input_str) {
   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
 
   for (size_t i = 0; i < input_str.length();) {
@@ -90,8 +84,6 @@ void CalcModel::Parser(const std::string input_str) {
       std::string current_letter_str(1, current_letter);
       auto it = token_map_.find(current_letter_str);
       if (it != token_map_.end()) {
-        std::cout << "Token found: " << current_letter << std::endl;
-        // // Дополнительные действия с найденным токеном
         tokens_.push(it->second);
       } else
         throw std::logic_error("Wrong Token " + current_letter_str);
@@ -106,123 +98,34 @@ void CalcModel::AddTokenWord(const std::string& input_str, size_t& index) {
       input_str.begin() + index, input_str.end(), word_regex);
 
   std::smatch match = *iterator;
-  index += match.length();
   std::string token = match.str();
-
+  index += match.length();
   auto it = token_map_.find(token);
   if (it != token_map_.end()) {
-    std::cout << "Token found: " << token << std::endl;
-    // // Дополнительные действия с найденным токеном
     tokens_.push(it->second);
   } else
     throw std::logic_error("Wrong Token " + token);
 }
 
-void CalcModel::AddTokenNumber(const std::string input_str, size_t& index) {
+void CalcModel::AddTokenNumber(const std::string& input_str, size_t& index) {
   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
   std::sregex_iterator iterator(input_str.begin() + index, input_str.end(),
                                 number_regex);
   std::smatch match = *iterator;
   std::string token = match.str();
   index += match.length();
-  // Если токен - число, обрабатываем его соответственно
-  std::cout << "Number found: " << token << std::endl;
-  // // Дополнительные действия с числом
   Token number{token, kDefault, kNone, kNumber, std::stod(token)};
   tokens_.push(number);
 }
 
-// void CalcModel::Parser(const std::string input_str) {
-//   // поменять регулярку
-//   std::regex token_regex(
-//       // добавить R
-//       "[\\d\\.]+(?:[eE][-+]?[\\d]+)?|x|\\(|\\)|\\+|-|\\*|/"
-//       "|\\^|(a-z)+");
-//   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
-//   std::sregex_iterator iterator(input_str.begin(), input_str.end(),
-//                                 token_regex);
-//   std::sregex_iterator end;
-
-//   while (iterator != end) {
-//     std::smatch match = *iterator;
-//     std::string token = match.str();
-
-//     bool is_number = std::regex_match(token, number_regex);
-//     if (is_number) {
-//       // Если токен - число, обрабатываем его соответственно
-//       std::cout << "Number found: " << token << std::endl;
-//       // // Дополнительные действия с числом
-//       Token number{token, kDefault, kNone, kNumber, std::stod(token)};
-//       tokens_.push(number);
-//     } else {
-//       // Если токен не число, ищем его в карте token_map
-//       auto it = token_map_.find(token);
-//       if (it != token_map_.end()) {
-//         std::cout << "Token found: " << token << std::endl;
-//         // // Дополнительные действия с найденным токеном
-//         tokens_.push(it->second);
-//       } else
-//         throw std::logic_error("Wrong Token " + token);
-//     }
-
-//     ++iterator;
-//   }
-//   MakeUnary();
-// }
-
-// новый
-
-// void CalcModel::Parser(const std::string input_str) {
-//   // поменять регулярку
-//   std::regex token_regex(
-//       // добавить R
-//       "[\\d\\.]+(?:[eE][-+]?[\\d]+)?|(a-z)+|x|\\(|\\)|\\+|-|\\*|/"
-//       "|\\^");
-//   // подумать насчет минусы   std::regex
-//   // number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
-//   std::regex number_regex(R"(-?\d+(\.\d+)?(?:[eE][-+]?\d+)?)");
-
-//   for (size_t i = 0; i < input_str.length();) {
-//     std::sregex_iterator iterator(input_str.begin() + i, input_str.end(),
-//                                   token_regex);
-//     std::smatch match = *iterator;
-//     std::string token = match.str();
-//     bool is_number = std::regex_match(token, number_regex);
-//     if (is_number) {
-//       // Если токен - число, обрабатываем его соответственно
-//       std::cout << "Number found: " << token << std::endl;
-//       // // Дополнительные действия с числом
-//       Token number{token, kDefault, kNone, kNumber, std::stod(token)};
-//       tokens_.push(number);
-//       i += token.size();
-//     } else {
-//       // Если токен не число, ищем его в карте token_map
-//       auto it = token_map_.find(token);
-//       if (it != token_map_.end()) {
-//         std::cout << "Token found: " << token << std::endl;
-//         // // Дополнительные действия с найденным токеном
-//         tokens_.push(it->second);
-//       } else
-//         throw std::logic_error("Wrong Token " + token);
-//       i += token.size();
-//     }
-//   }
-//   MakeUnary();
-// }
-
 void CalcModel::MakeUnaryAndCheckBrackets() {
-  // Создаем пустую очередь для обработки
   std::queue<Token> temp_queue;
 
-  // Переносим элементы из текущей очереди tokens_ во временную очередь
-  // temp_queue
   while (!tokens_.empty()) {
     temp_queue.push(tokens_.front());
     tokens_.pop();
   }
 
-  // Обрабатываем каждый элемент во временной очереди и добавляем их обратно в
-  // tokens_
   int l_brackets = 0, r_brackets = 0;
   while (!temp_queue.empty()) {
     CountBrackets(temp_queue, l_brackets, r_brackets);
@@ -249,7 +152,7 @@ void CalcModel::MakeUnary(std::queue<Token>& temp_queue) {
     tokens_.push(current_token);
 }
 
-void CalcModel::CountBrackets(std::queue<Token> temp_queue, int& l_bracket,
+void CalcModel::CountBrackets(std::queue<Token>& temp_queue, int& l_bracket,
                               int& r_bracket) {
   Token current_token = temp_queue.front();
   if (current_token.name_ == "(") l_bracket++;
@@ -335,13 +238,12 @@ double CalcModel::PostfixNotationCalculation() {
                    [&](auto) { PushToResult(x_); }},
         postfix_queue_.front().function_);
     postfix_queue_.pop();
-    std::cout << "Res:" << result_.back() << std::endl;
   }
 
   return PopFromResult();
 }
 
-void CalcModel::PushToResult(double num) { result_.push_back(num); }
+void CalcModel::PushToResult(const double num) { result_.push_back(num); }
 
 double CalcModel::PopFromResult() {
   if (!result_.empty()) {
@@ -358,8 +260,9 @@ void CalcModel::ClearTokens() {
   }
 }
 
-void CalcModel::CalculateXY(double step, double x_min, double x_max,
-                            double y_min, double y_max) {
+void CalcModel::CalculateXY(const double step, const double x_min,
+                            const double x_max, const double y_min,
+                            const double y_max) {
   std::vector<double> x_values, y_values;
   std::queue<Token> const_postfix_queue = postfix_queue_;
   for (double current_x = x_min; current_x <= x_max; current_x += step) {

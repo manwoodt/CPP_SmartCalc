@@ -65,30 +65,30 @@ class CalcModel {
   CalcModel();
   ~CalcModel() = default;
 
-  void CalculateAnswer(const std::string input_str, const std::string input_x);
-  void CalculateGraph(const std::string input_str, double step, double x_start,
-                      double x_end, double y_start, double y_end);
+  void CalculateAnswer(const std::string& input_str, const std::string input_x);
+  void CalculateGraph(const std::string& input_str, const double step,
+                      const double x_start, const double x_end,
+                      const double y_min, const double y_max);
   double GetAnswer() const;
   XYGraph GetGraph() const;
 
  private:
-  void Parser(const std::string input_str);
+  void Parser(const std::string& input_str);
   void AddTokenWord(const std::string& input_str, size_t& index);
-  void AddTokenNumber(const std::string input_str, size_t& index);
+  void AddTokenNumber(const std::string& input_str, size_t& index);
   void CheckX(const std::string input_x);
   void CreateTokenMap();
   void MakeUnaryAndCheckBrackets();
   void MakeUnary(std::queue<Token>& temp_queue);
-  void CountBrackets(std::queue<Token> temp_queue, int& l_bracket,
+  void CountBrackets(std::queue<Token>& temp_queue, int& l_bracket,
                      int& r_bracket);
   void ConvertToPostfix();
   double PostfixNotationCalculation();
-  void CalculateXY(double step, double x_min, double x_max, double y_min,
-                   double y_max);
+  void CalculateXY(const double step, const double x_min, const double x_max,
+                   const double y_min, const double y_max);
   std::queue<Token> tokens_;
   std::queue<Token> postfix_queue_;
   std::stack<Token> stack;
-  //  std::string input_exp_;
   std::vector<double> result_;
   std::map<std::string, Token> token_map_;
 
@@ -98,18 +98,18 @@ class CalcModel {
 
   void CheckTokens();
   void ClearTokens();
-  void PushToResult(double num);
+  void PushToResult(const double num);
   double PopFromResult();
 
   bool CheckFirstToken[6] = {1, 1, 0, 1, 1, 0};
   bool CheckLastToken[6] = {1, 0, 0, 0, 0, 1};
   bool SuitableTypesMatrix_[6][6] = {
-      {0, 1, 1, 0, 0, 1},  // kNumber ./
-      {1, 1, 0, 1, 1, 0},  // kUnaryOperator ./
-      {1, 1, 0, 1, 1, 0},  // kBinaryOperator ./
-      {0, 0, 0, 0, 1, 0},  // kUnaryFunction ./
-      {1, 1, 0, 1, 1, 0},  // kOpenBracket ./
-      {0, 0, 1, 0, 0, 1},  // kCloseBracket ./
+      {0, 1, 1, 0, 0, 1},  // kNumber
+      {1, 1, 0, 1, 1, 0},  // kUnaryOperator
+      {1, 1, 0, 1, 1, 0},  // kBinaryOperator
+      {0, 0, 0, 0, 1, 0},  // kUnaryFunction
+      {1, 1, 0, 1, 1, 0},  // kOpenBracket
+      {0, 0, 1, 0, 0, 1},  // kCloseBracket
   };
 };
 }  // namespace s21

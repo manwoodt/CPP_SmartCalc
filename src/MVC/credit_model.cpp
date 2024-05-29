@@ -73,34 +73,6 @@ std::vector<double> CreditCalcModel::СalculateAnnuity() const noexcept {
   return returnValue;
 }
 
-// std::vector<double> CreditCalcModel::CalculateAnnuity() const noexcept {
-//   double monthlyInterestRateDouble =
-//       static_cast<long double>(monthlyInterestRate_);
-//   long double monthlyInterestRateLong = monthlyInterestRateDouble / 100;
-//   long double termLong = static_cast<long double>(term_);
-
-//   long double monthlyPaymentLong =
-//       loanAmount_ *
-//       (monthlyInterestRateLong * pow(1 + monthlyInterestRateLong, termLong))
-//       / (pow(1 + monthlyInterestRateLong, termLong) - 1);
-
-//   double monthlyPayment =
-//       static_cast<double>(monthlyPaymentLong);  // Приводим обратно к double
-//       для
-//                                                 // сохранения результата
-
-//   double totalPayment = monthlyPayment * term_;
-//   double overpayment = totalPayment - loanAmount_;
-
-//   std::vector<double> returnValue(3);
-//   returnValue[0] = monthlyPayment;
-//   returnValue[1] = totalPayment;
-//   returnValue[2] = overpayment;
-
-//   printVector(returnValue);
-//   return returnValue;
-// }
-
 std::vector<double> CreditCalcModel::СalculateDifferentiated() const noexcept {
   double loanBalance = 0, monthlyPayment = 0, totalPayment = 0, overpayment = 0;
   for (int i = 1; i <= term_; i++) {
