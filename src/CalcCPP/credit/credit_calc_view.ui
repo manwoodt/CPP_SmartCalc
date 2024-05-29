@@ -308,12 +308,12 @@ background:rgb(182, 255, 104)</string>
     </property>
     <item>
      <property name="text">
-      <string>Дифференцированные</string>
+      <string>Аннуитетные</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Аннуитетные</string>
+      <string>Дифференцированные</string>
      </property>
     </item>
    </widget>

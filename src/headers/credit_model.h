@@ -13,11 +13,11 @@ class CreditCalcModel {
                const bool isYear, const std::string& interestRate,
                bool isAnnuity);
 
-  std::vector<std::string> СalculateAnswer() const noexcept;
+  std::vector<double> СalculateAnswer() const noexcept;
 
  private:
-  std::vector<std::string> СalculateAnnuity() const noexcept;
-  std::vector<std::string> СalculateDifferentiated() const noexcept;
+  std::vector<double> СalculateAnnuity() const noexcept;
+  std::vector<double> СalculateDifferentiated() const noexcept;
 
  private:
   bool isAnnuity_;

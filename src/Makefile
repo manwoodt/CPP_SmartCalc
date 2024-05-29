@@ -11,7 +11,7 @@ ifeq ($(OS), Darwin)
     # FLAGS += -D MACOS
 	OPEN:=open
 	QMAKE:=qmake
-	# CC=clang++
+	CC=clang++
 	CFLAGS+=$(shell pkg-config --cflags gtest)
 	LIBS+=$(shell pkg-config --libs gtest)
 else
@@ -26,7 +26,7 @@ dvi:
 	open../README.md
 
 clean:
-	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build
+	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build calc_test
 
 install: uninstall
 	mkdir -p build
@@ -44,9 +44,9 @@ uninstall:
 # 	ar rcs matrix.a matrix.o
 
 test: 
-	$(GCC) $(GCOV) -c MVC/model.cpp
+	$(GCC) $(GCOV) -c MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp
 	$(GCC) -c tests.cpp 
-	$(GCC) $(GCOV) $(LIBS)  -o calc_test tests.o model.o -g
+	$(GCC) $(GCOV) $(LIBS)  -o calc_test tests.o credit_model.o model.o controller.o -g
 	./calc_test
 #  make clean
 
@@ -77,7 +77,10 @@ else
 endif
 
 gcov_report: test
-	lcov  -t "calc_test" -o calc_test.info --no-external -c -d  .
+	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture
+
+
+#	lcov  -t "calc_test" -o calc_test.info --no-external -c -d  . --gcov-tool "/opt/goinfre/$(USER)/homebrew/opt/llvm/bin/llvm-cov gcov"
 	genhtml -o report/ calc_test.info
 	open ./report/index.html
 	rm -rf calc_test *.o *.a *gcda *gcno *info
@@ -92,4 +95,9 @@ gcov_report: test
     #     open $(COV_REPORT)gcov_report.html; \
     # else \
     #     echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
-    # fi
+    
+	
+	# @$(LCOV_PATH) --capture --directory . --output-file calc_test.info
+	# @geninfo --ignore-errors mismatch . --output-file calc_test.info
+	# @genhtml -o report calc_test.info
+	# @open report/index.html

@@ -32,13 +32,26 @@ void s21::Credit_calc::equal() {
         QMessageBox::warning(this, "Внимание!", "Введите процентную ставку!");
     } else {
         try {
-          std::vector<std::string> outputData = controller_->CalculateCredit(loanAmount,term,isYear,interestRate,isAnnuity);
-              ui->lineEdit_monthlyPayment->setText(QString(outputData[0].c_str()));
-              ui->lineEdit_overpayment->setText(QString(outputData[1].c_str()));
-              ui->lineEdit_overpayment->setText(QString(outputData[2].c_str()));
+          std::vector<double> outputData = controller_->CalculateCredit(loanAmount,term,isYear,interestRate,isAnnuity);
+//              ui->lineEdit_monthlyPayment->setText(QString(outputData[0].c_str()));
+//              ui->lineEdit_totalPayment->setText(QString(outputData[1].c_str()));
+//              ui->lineEdit_overpayment->setText(QString(outputData[2].c_str()));
+          QString monthlyPayment_str =
+              QString::number(round(outputData[0] * 100) / 100, 'g', 15);
+          QString overpayment_str =
+              QString::number(round(outputData[2] * 100) / 100, 'g', 15);
+          QString totalPayment_str =
+              QString::number(round(outputData[1] * 100) / 100, 'g', 15);
+
+          ui->lineEdit_monthlyPayment->setText(monthlyPayment_str);
+          ui->lineEdit_totalPayment->setText(totalPayment_str);
+          ui->lineEdit_overpayment->setText(overpayment_str);
+
         } catch (const std::exception &e) {
           QMessageBox::critical(this, "Внимание!", e.what());
     }
+
+
 }
 }
 s21::Credit_calc::~Credit_calc() { delete ui; }

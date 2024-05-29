@@ -3,7 +3,7 @@
 // 3 почистить код
 // 4 убрать депозит
 // 5 решить проблему с tg()
-
+// 6 сделать норм вывод у кредита
 #include "headers/controller.h"
 #include "headers/credit_model.h"
 #include "headers/model.h"
