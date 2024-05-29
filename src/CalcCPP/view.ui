@@ -317,38 +317,6 @@ border-bottom-left-radius: 10px;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="pushButton_deposit">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>430</y>
-       <width>121</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-   border: 1px solid grey;
- background-color:  transparent;
-color: black;
-border-top-right-radius: 30px;
-border-top-left-radius: 30px;
-border-bottom-right-radius: 30px;
-border-bottom-left-radius: 30px;
-}
-QPushButton:pressed {
-    background-color: rgb(11, 213, 131)
-}</string>
-     </property>
-     <property name="text">
-      <string>deposit</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_mod">
      <property name="geometry">
       <rect>
@@ -479,7 +447,7 @@ QPushButton:pressed {
       <rect>
        <x>10</x>
        <y>430</y>
-       <width>121</width>
+       <width>191</width>
        <height>61</height>
       </rect>
      </property>
@@ -509,9 +477,9 @@ QPushButton:pressed {
     <widget class="QPushButton" name="pushButton_credit">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>200</x>
        <y>430</y>
-       <width>121</width>
+       <width>171</width>
        <height>61</height>
       </rect>
      </property>

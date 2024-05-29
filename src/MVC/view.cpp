@@ -51,8 +51,6 @@ s21::View::View(s21::Controller *controller, QWidget *parent)
   connect(ui->pushButton_graph, SIGNAL(clicked()), this, SLOT(draw_graph()));
   connect(ui->pushButton_credit, SIGNAL(clicked()), this,
           SLOT(credit_window()));
-  connect(ui->pushButton_deposit, SIGNAL(clicked()), this,
-          SLOT(deposit_window()));
 }
 
 s21::View::~View() { delete ui; }
