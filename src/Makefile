@@ -23,7 +23,7 @@ endif
 all: test clean
 
 dvi:
-	open../README.md
+	open dvi/README.md
 
 clean:
 	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build calc_test

@@ -138,7 +138,6 @@ void View::draw_graph() {
   double y_min = ui->doubleSpinBox_y_min->text().toDouble();
   double y_max = ui->doubleSpinBox_y_max->text().toDouble();
   double step = ui->doubleSpinBox_step->text().toDouble();
-  //  int num = ui->spinBox_number_of_points->text().toInt();
   QString expr = ui->InputString->text();
   if (expr.isEmpty())
     QMessageBox::warning(this, "Внимание!",
