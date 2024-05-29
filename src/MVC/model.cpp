@@ -24,11 +24,12 @@ void CalcModel::CalculateAnswer(const std::string input_str,
 }
 
 void CalcModel::CalculateGraph(const std::string input_str, double step,
-                               double x_start, double x_end) {
+                               double x_start, double x_end, double y_min,
+                               double y_max) {
   ClearTokens();
   Parser(input_str);
   ConvertToPostfix();
-  CalculateXY(step, x_start, x_end);
+  CalculateXY(step, x_start, x_end, y_min, y_max);
 }
 
 void CalcModel::CreateTokenMap() {
@@ -357,14 +358,20 @@ void CalcModel::ClearTokens() {
   }
 }
 
-void CalcModel::CalculateXY(double step, double x_min, double x_max) {
+void CalcModel::CalculateXY(double step, double x_min, double x_max,
+                            double y_min, double y_max) {
   std::vector<double> x_values, y_values;
   std::queue<Token> const_postfix_queue = postfix_queue_;
-  for (double current_x = x_min; current_x < x_max; current_x += step) {
+  for (double current_x = x_min; current_x <= x_max; current_x += step) {
     x_values.push_back(current_x);
     x_ = x_values.back();
     postfix_queue_ = const_postfix_queue;
-    y_values.push_back(PostfixNotationCalculation());
+    double calculated_y = PostfixNotationCalculation();
+    if ((calculated_y < y_min) || (calculated_y > y_max)) {
+      y_values.push_back(std::numeric_limits<double>::quiet_NaN());
+    } else {
+      y_values.push_back(calculated_y);
+    }
   }
   answer_graph_ = std::make_pair(x_values, y_values);
 }

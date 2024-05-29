@@ -148,7 +148,7 @@ else{
   ui->Graph->yAxis->setRange(y_min, y_max);
 
   try {
-      result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max);
+      result = controller_->CalculateGraph(expr.toStdString(), step, x_min, x_max,y_min,y_max);
   } catch (const std::exception &e) {
     QMessageBox::critical(this, "Внимание!", e.what());
   }

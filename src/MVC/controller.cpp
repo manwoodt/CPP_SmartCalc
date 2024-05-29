@@ -5,9 +5,9 @@ void s21::Controller::CalculateValue(std::string input_str, std::string x) {
 }
 
 XYGraph s21::Controller::CalculateGraph(const std::string input_str,
-                                        double step, double x_start,
-                                        double x_end) {
-  Calc_->CalculateGraph(input_str, step, x_start, x_end);
+                                        double step, double x_min,
+                                        double x_max, double y_min, double y_max) {
+  Calc_->CalculateGraph(input_str, step, x_min, x_max, y_min, y_max);
   return Calc_->GetGraph();
 }
 

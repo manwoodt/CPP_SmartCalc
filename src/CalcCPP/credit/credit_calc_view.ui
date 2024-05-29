@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>462</width>
-    <height>462</height>
+    <height>456</height>
    </rect>
   </property>
   <property name="font">
@@ -149,7 +149,7 @@ QPushButton:pressed {
       <x>10</x>
       <y>90</y>
       <width>171</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -170,7 +170,7 @@ QPushButton:pressed {
       <x>10</x>
       <y>50</y>
       <width>211</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -188,7 +188,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="lineEdit_overpayment">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>270</x>
       <y>50</y>
       <width>111</width>
       <height>31</height>
@@ -219,7 +219,7 @@ background:rgb(46, 162, 95)</string>
    <widget class="QLineEdit" name="lineEdit_totalPayment">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>270</x>
       <y>90</y>
       <width>111</width>
       <height>31</height>
@@ -252,7 +252,7 @@ background:rgb(46, 162, 95)</string>
       <x>10</x>
       <y>10</y>
       <width>211</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -270,7 +270,7 @@ background:rgb(46, 162, 95)</string>
    <widget class="QLineEdit" name="lineEdit_monthlyPayment">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>270</x>
       <y>10</y>
       <width>111</width>
       <height>31</height>
@@ -394,7 +394,7 @@ background:transparent</string>
    <widget class="QLineEdit" name="lineEdit_loanAmount">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>270</x>
       <y>10</y>
       <width>111</width>
       <height>31</height>
@@ -425,7 +425,7 @@ background:rgb(46, 162, 95)</string>
    <widget class="QLineEdit" name="lineEdit_term">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>270</x>
       <y>50</y>
       <width>111</width>
       <height>31</height>
@@ -459,7 +459,7 @@ background:rgb(46, 162, 95)</string>
       <x>20</x>
       <y>50</y>
       <width>121</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -498,7 +498,7 @@ background:rgb(46, 162, 95)</string>
    <widget class="QComboBox" name="comboBox_year_or_month">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>140</x>
       <y>50</y>
       <width>101</width>
       <height>31</height>
@@ -531,7 +531,7 @@ background:transparent</string>
    <widget class="QLineEdit" name="lineEdit_interestRate">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>270</x>
       <y>90</y>
       <width>111</width>
       <height>31</height>
@@ -565,7 +565,7 @@ background:rgb(46, 162, 95)</string>
       <x>20</x>
       <y>90</y>
       <width>171</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">

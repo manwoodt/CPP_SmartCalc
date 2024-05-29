@@ -18,7 +18,7 @@ class Controller {
 
   void CalculateValue(std::string input_str, std::string x);
   XYGraph CalculateGraph(const std::string input_str, double step,
-                         double x_start, double x_end);
+                         double x_min, double x_max,double y_min, double y_max);
   std::vector<double> CalculateCredit(const std::string &loanAmount,
                                       const std::string &term, bool isYear,
                                       const std::string &interestRate,

@@ -67,7 +67,7 @@ class CalcModel {
 
   void CalculateAnswer(const std::string input_str, const std::string input_x);
   void CalculateGraph(const std::string input_str, double step, double x_start,
-                      double x_end);
+                      double x_end, double y_start, double y_end);
   double GetAnswer() const;
   XYGraph GetGraph() const;
 
@@ -83,7 +83,8 @@ class CalcModel {
                      int& r_bracket);
   void ConvertToPostfix();
   double PostfixNotationCalculation();
-  void CalculateXY(double step, double x_start, double x_end);
+  void CalculateXY(double step, double x_min, double x_max, double y_min,
+                   double y_max);
   std::queue<Token> tokens_;
   std::queue<Token> postfix_queue_;
   std::stack<Token> stack;
