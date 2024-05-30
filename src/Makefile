@@ -73,7 +73,7 @@ gcov_report: tests
 	rm -rf calc_test *.o *.a *gcda *gcno *info
 
 dvi:
-	open report/README.md
+	open res/README.md
 
 dist:
 	cd .. && tar -czf s21_SmartCalc_v2.0.tgz src
