@@ -25,9 +25,7 @@ clean:
 
 install: uninstall
 	mkdir -p build
-	mkdir $(HOME)/Desktop/Calculator
 	cd build && qmake ../CalcCPP/CalcCPP.pro && make
-	# cp -rf build/CalcCPP.app $(HOME)/Desktop/Calculator/CalcCPP.app
 	cd build/CalcCPP.app/Contents/MacOS &&./CalcCPP
 
 uninstall:
