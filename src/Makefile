@@ -13,12 +13,12 @@ ifeq ($(OS), Darwin)
 	CFLAGS+=$(shell pkg-config --cflags gtest)
 	LIBS+=$(shell pkg-config --libs gtest)
 else
-	LIBS+= -lsubunit -lgmock -lrt -lm -lpthread -lgtest
+	LIBS+= -lsubunit -lgtest -lgmock -lrt -lm -lpthread
 	OPEN:=xdg-open
 	QMAKE:=qmake6
 endif
 
-all: test clean
+all: tests clean
 
 clean:
 	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build calc_test
@@ -38,7 +38,7 @@ uninstall:
 tests: 
 	$(GCC) $(GCOV) -c MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp
 	$(GCC) -c calc_tests.cpp 
-	$(GCC) $(GCOV) $(LIBS) -o calc_test calc_tests.o credit_model.o model.o controller.o  -g
+	$(GCC) $(GCOV) -o calc_test calc_tests.o credit_model.o model.o controller.o $(LIBS)  -g
 	./calc_test
 #-lgtest -lgmock -lrt -lm -lpthread
 mytest:
@@ -59,14 +59,14 @@ clang:
 	@rm clang-format
 
 
-leaks: test
+leaks: tests
 ifeq ($(OS), Linux)
 	CK_FORK=no valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./calc_test
 else
 	leaks -atExit --leak-check=full --show-leak-kinds=all  ./calc_test 
 endif
 
-gcov_report: test
+gcov_report: tests
 	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture 
 	genhtml -o report/calc_test.html calc_test.info
 	open ./report/index.html

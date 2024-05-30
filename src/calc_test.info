@@ -1,4 +1,6 @@
 TN:calc_test
+SF:/home/manwoodt/CPP3_SmartCalc_v2.0-1/src/headers/model.h
+end_of_record
 SF:/home/manwoodt/CPP3_SmartCalc_v2.0-1/src/MVC/model.cpp
 FN:5,_ZN3s219CalcModelC2Ev
 FNDA:1,_ZN3s219CalcModelC2Ev
@@ -260,8 +262,6 @@ DA:274,0
 DA:276,0
 DA:279,0
 DA:280,0
-end_of_record
-SF:/home/manwoodt/CPP3_SmartCalc_v2.0-1/src/headers/model.h
 end_of_record
 TN:calc_test
 SF:/home/manwoodt/CPP3_SmartCalc_v2.0-1/src/MVC/controller.cpp
