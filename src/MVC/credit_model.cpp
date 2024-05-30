@@ -13,20 +13,6 @@
 // Выход: ежемесячный платеж, переплата по кредиту, общая выплата
 namespace s21 {
 
-void printVector(const std::vector<double>& vec) {
-  for (const auto& element : vec) {
-    std::cout << element << " ";
-  }
-  std::cout << std::endl;
-}
-
-void printVector(const std::vector<std::string>& vec) {
-  for (const auto& element : vec) {
-    std::cout << element << " ";
-  }
-  std::cout << std::endl;
-}
-
 CreditCalcModel::CreditCalcModel(){};
 
 void CreditCalcModel::SetData(const std::string& loanAmount,
@@ -38,9 +24,9 @@ void CreditCalcModel::SetData(const std::string& loanAmount,
     double interestRateDouble = std::stod(interestRate);
     monthlyInterestRate_ = interestRateDouble / 100 / 12;
   } catch (const std::invalid_argument& e) {
-    std::cerr << "Ошибка преобразования строки в число: " << e.what() << '\n';
+    throw std::runtime_error("Ошибка преобразования строки в число: " +
+                             std::string(e.what()));
   }
-  // if (loanAmount < 0.01 || term < 0.01 || interestRate < 0.01) return -1;
   if (isYear) term_ *= 12;
   isAnnuity_ = isAnnuity;
 }
@@ -59,17 +45,13 @@ std::vector<double> CreditCalcModel::СalculateAnnuity() const noexcept {
       (pow(1 + monthlyInterestRate_, term_) - 1);
   double totalPayment = monthlyPayment * term_;
   double overpayment = totalPayment - loanAmount_;
-  // monthlyPayment = round(monthlyPayment * 100) / 100;
-  // totalPayment = round(totalPayment * 100) / 100;
-  // overpayment = round(overpayment * 100) / 100;
-  // std::cout << monthlyPayment << '\n'
-  //           << totalPayment << '\n'
-  //           << overpayment << '\n';
+  monthlyPayment = round(monthlyPayment * 100) / 100;
+  totalPayment = round(totalPayment * 100) / 100;
+  overpayment = round(overpayment * 100) / 100;
   std::vector<double> returnValue(3);
   returnValue[0] = monthlyPayment;
   returnValue[1] = totalPayment;
   returnValue[2] = overpayment;
-  printVector(returnValue);
   return returnValue;
 }
 
@@ -81,9 +63,9 @@ std::vector<double> CreditCalcModel::СalculateDifferentiated() const noexcept {
     totalPayment += monthlyPayment;
     overpayment += monthlyPayment - loanAmount_ / term_;
   }
-  // monthlyPayment = round(monthlyPayment * 100) / 100;
-  // // totalPayment = round(totalPayment * 100) / 100;
-  // overpayment = round(overpayment * 100) / 100;
+  monthlyPayment = round(monthlyPayment * 100) / 100;
+  totalPayment = round(totalPayment * 100) / 100;
+  overpayment = round(overpayment * 100) / 100;
 
   std::vector<double> returnValue(3);
   returnValue[0] = monthlyPayment;

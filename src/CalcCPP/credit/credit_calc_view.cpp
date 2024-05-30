@@ -33,11 +33,11 @@ void s21::Credit_calc::equal() {
       std::vector<double> outputData = controller_->CalculateCredit(
           loanAmount, term, isYear, interestRate, isAnnuity);
       QString monthlyPayment_str =
-          QString::number(round(outputData[0] * 100) / 100, 'g', 15);
+          QString::number(outputData[0], 'g', 15);
       QString overpayment_str =
-          QString::number(round(outputData[2] * 100) / 100, 'g', 15);
+          QString::number(outputData[2], 'g', 15);
       QString totalPayment_str =
-          QString::number(round(outputData[1] * 100) / 100, 'g', 15);
+          QString::number(outputData[1], 'g', 15);
 
       ui->lineEdit_monthlyPayment->setText(monthlyPayment_str);
       ui->lineEdit_totalPayment->setText(totalPayment_str);

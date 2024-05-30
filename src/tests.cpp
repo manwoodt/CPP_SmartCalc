@@ -71,29 +71,29 @@ TEST(CalculatorXTest, Test_9) {
 //   EXPECT_DOUBLE_EQ(overpayment, 83099.7);
 // }
 
-// TEST(CreditCalcTest, AnnuityTest1) {
-//   s21::Controller controller(&calc, &credit);
-//   std::vector<double> answer =
-//       controller.CalculateCredit("1000000", "12", 0, "15", 1);
-//   double monthlyPayment = answer[0];
-//   double totalPayment = answer[1];
-//   double overpayment = answer[2];
-//   EXPECT_NEAR(monthlyPayment, 90258.3, 0.01);
-//   EXPECT_DOUBLE_EQ(totalPayment, 1083099.75);
-//   EXPECT_DOUBLE_EQ(overpayment, 83099.75);
-// }
+TEST(CreditCalcTest, AnnuityTest1) {
+  s21::Controller controller(&calc, &credit);
+  std::vector<double> answer =
+      controller.CalculateCredit("1000000", "12", 0, "15", 1);
+  double monthlyPayment = answer[0];
+  double totalPayment = answer[1];
+  double overpayment = answer[2];
+  EXPECT_DOUBLE_EQ(monthlyPayment, 90258.309999999998);
+  EXPECT_DOUBLE_EQ(totalPayment, 1083099.75);
+  EXPECT_DOUBLE_EQ(overpayment, 83099.75);
+}
 
-// TEST(CreditCalcTest, AnnuityTest2) {
-//   s21::Controller controller(&calc, &credit);
-//   std::vector<double> answer =
-//       controller.CalculateCredit("1000000", "3", 1, "15", 1);
-//   double monthlyPayment = answer[0];
-//   double totalPayment = answer[1];
-//   double overpayment = answer[2];
-//   EXPECT_NEAR(monthlyPayment, 34665.33, 0.01);
-//   EXPECT_DOUBLE_EQ(totalPayment, 1247951.8);
-//   EXPECT_DOUBLE_EQ(overpayment, 247951.8);
-// }
+TEST(CreditCalcTest, AnnuityTest2) {
+  s21::Controller controller(&calc, &credit);
+  std::vector<double> answer =
+      controller.CalculateCredit("1000000", "3", 1, "15", 1);
+  double monthlyPayment = answer[0];
+  double totalPayment = answer[1];
+  double overpayment = answer[2];
+  EXPECT_DOUBLE_EQ(monthlyPayment, 34665.33);
+  EXPECT_DOUBLE_EQ(totalPayment, 1247951.83);
+  EXPECT_DOUBLE_EQ(overpayment, 247951.83);
+}
 
 TEST(CreditCalcTest, DifferentiatedTest1) {
   s21::Controller controller(&calc, &credit);

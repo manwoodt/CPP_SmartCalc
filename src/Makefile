@@ -76,11 +76,9 @@ else
 endif
 
 gcov_report: test
-	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture
-
-
-#	lcov  -t "calc_test" -o calc_test.info --no-external -c -d  . --gcov-tool "/opt/goinfre/$(USER)/homebrew/opt/llvm/bin/llvm-cov gcov"
-	genhtml -o report/ calc_test.info
+	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture --ignore-errors=usage
+	geninfo --ignore-errors version
+	genhtml -o report/calc_test.info
 	open ./report/index.html
 	rm -rf calc_test *.o *.a *gcda *gcno *info
 

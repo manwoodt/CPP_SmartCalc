@@ -7,7 +7,6 @@ View::View(Controller *controller, QWidget *parent)
   credit_Window = new Credit_calc(controller);
   SetSignals();
 }
-
 View::~View() { delete ui; }
 
 void View::SetSignals(){
