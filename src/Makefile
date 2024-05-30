@@ -1,10 +1,8 @@
 CC=g++
 CFLAGS= -Wall -Wextra -Werror -g -std=c++17 
-GCR=
 GCC =$(CC) $(CFLAGS)
-CHECKFLAGS=-lgtest
 GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
-OS = $(shell uname)
+OS=$(shell uname)
 BIN_FILE=CalcCPP
 
 ifeq ($(OS), Darwin)
@@ -15,7 +13,7 @@ ifeq ($(OS), Darwin)
 	CFLAGS+=$(shell pkg-config --cflags gtest)
 	LIBS+=$(shell pkg-config --libs gtest)
 else
-	LIBS += -lsubunit -lrt -lm -lpthread
+	LIBS+= -lsubunit -lgmock -lrt -lm -lpthread -lgtest
 	OPEN:=xdg-open
 	QMAKE:=qmake6
 endif
@@ -46,7 +44,7 @@ uninstall:
 test: 
 	$(GCC) $(GCOV) -c MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp
 	$(GCC) -c tests.cpp 
-	$(GCC) $(GCOV) $(LIBS)  -o calc_test tests.o credit_model.o model.o controller.o -g
+	$(GCC) $(GCOV) $(LIBS) -o calc_test tests.o credit_model.o model.o controller.o -lgtest -lgmock -lrt -lm -lpthread -g
 	./calc_test
 #  make clean
 
@@ -76,9 +74,8 @@ else
 endif
 
 gcov_report: test
-	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture --ignore-errors=usage
-	geninfo --ignore-errors version
-	genhtml -o report/calc_test.info
+	lcov -t "calc_test" -o calc_test.info --no-external -c --directory . --capture 
+	genhtml -o report/calc_test.html calc_test.info
 	open ./report/index.html
 	rm -rf calc_test *.o *.a *gcda *gcno *info
 
