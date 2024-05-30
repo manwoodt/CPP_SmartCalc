@@ -1,8 +1,8 @@
-CC=g++ 
+CC=g++
 CFLAGS= -Wall -Wextra -Werror -g -std=c++17 
 GCR=
 GCC =$(CC) $(CFLAGS)
-# CHECKFLAGS=-lgtest
+CHECKFLAGS=-lgtest
 GCOV=--coverage -pthread -fprofile-arcs -ftest-coverage
 OS = $(shell uname)
 BIN_FILE=CalcCPP

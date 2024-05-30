@@ -33,7 +33,7 @@ int main() {
   CalcModel calc;
   CreditCalcModel credit;
   Controller controller(&calc, &credit);
-  std::vector<std::string> answer =
+  std::vector<double> answer =
       controller.CalculateCredit("1000000", "12", 0, "15", 1);
   // printVector(answer);
   // double monthlyPayment = std::stod(answer[0]);
