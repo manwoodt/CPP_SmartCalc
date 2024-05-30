@@ -20,9 +20,6 @@ endif
 
 all: test clean
 
-dvi:
-	open dvi/README.md
-
 clean:
 	rm -rf *.o *.a *.so *.gcda *.gcno *.gch rep.info *.html *.css report *.txt *.dSYM ./build calc_test
 
@@ -37,17 +34,13 @@ uninstall:
 	rm -rf $(HOME)/Desktop/Calculator/
 	rm -rf build
 
-# s21_matrix.a:
-# 	$(GCC) -c s21_*.cc -o matrix.o
-# 	ar rcs matrix.a matrix.o
 
-test: 
+tests: 
 	$(GCC) $(GCOV) -c MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp
-	$(GCC) -c tests.cpp 
-	$(GCC) $(GCOV) $(LIBS) -o calc_test tests.o credit_model.o model.o controller.o -lgtest -lgmock -lrt -lm -lpthread -g
+	$(GCC) -c calc_tests.cpp 
+	$(GCC) $(GCOV) $(LIBS) -o calc_test calc_tests.o credit_model.o model.o controller.o  -g
 	./calc_test
-#  make clean
-
+#-lgtest -lgmock -lrt -lm -lpthread
 mytest:
 	@echo --------------------MYTEST-----------------------
 	$(GCC) -std=c++17 -o  calc MVC/model.cpp MVC/controller.cpp MVC/credit_model.cpp test_main.cpp -lm -g
@@ -79,19 +72,8 @@ gcov_report: test
 	open ./report/index.html
 	rm -rf calc_test *.o *.a *gcda *gcno *info
 
-	# gcovr $(GCR) --decisions \
-	# --html-details $(COV_REPORT)gcov_report.html \
-	# --html-theme github.dark-blue
-	# rm -rf *.info && rm -rf *.gcov
-	# @if command -v xdg-open > /dev/null; then \
-    #     xdg-open $(COV_REPORT)gcov_report.html; \
-    # elif command -v open > /dev/null; then \
-    #     open $(COV_REPORT)gcov_report.html; \
-    # else \
-    #     echo "Cannot open browser. Please open '$(COV_REPORT)gcov_report.html' manually."; \
-    
-	
-	# @$(LCOV_PATH) --capture --directory . --output-file calc_test.info
-	# @geninfo --ignore-errors mismatch . --output-file calc_test.info
-	# @genhtml -o report calc_test.info
-	# @open report/index.html
+dvi:
+	open report/README.md
+
+dist:
+	cd .. && tar -czf s21_SmartCalc_v2.0.tgz src
