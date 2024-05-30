@@ -68,17 +68,17 @@ CPP_SmartCalc реализован в соответствии со следую
 
 - *Математические вычисления*
 
-![](calc.gif)
+![](src/res/calc.gif)
 
 - *Вывод ошибок*
 
-![](errors.gif)
+![](src/res/errors.gif)
 
 - *График*
 
-![](plot.gif)
+![](src/res/plot.gif)
 
 - *Кредитный калькулятор*
 
-![](credit.gif)
+![](src/res/credit.gif)
 
