@@ -9,7 +9,7 @@
 1. Клонируйте репозиторий:
 
     ```bash
-    git clone https://github.com/manwoodt/CPP1_s21_matrixplus.git
+    git clone https://github.com/manwoodt/CPP_SmartCalc.git
     ```
 
 2. Перейдите в директорию проекта: 
@@ -19,7 +19,11 @@
 
 3. Скомпилируйте проект с помощью Make:
     ```bash
-    make
+    make install
+    ```
+4. Запустите тесты:
+    ```bash
+    make test
     ```
 
 ## Часть 1. Требования к CPP_SmartCalc
